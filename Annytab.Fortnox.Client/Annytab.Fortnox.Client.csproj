@@ -12,6 +12,8 @@
     <PackageReleaseNotes>This is the first release.</PackageReleaseNotes>
     <NeutralLanguage>English</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/annytab/a-fortnox-client</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/annytab/a-fortnox-client/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
