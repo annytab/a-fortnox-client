@@ -39,14 +39,21 @@ namespace TestProgram
             {
                 Customer = new Customer
                 {
-                    CustomerNumber = "TEST-588",
+                    CustomerNumber = "TEST-FREDDE",
                     Name = "Testbolaget",
-                    Email = "test@testbolaget.se"
+                    Email = "test@testbolaget.se",
+                    DefaultTemplates = new DefaultTemplates
+                    {
+                        Invoice = "DEFAULTTEMPLATE"
+                    }
                 }
             };
 
             // Add the post
             post = await config.fortnox_repository.Add<CustomerRoot>(config.client, post, "customers");
+
+            // Test evaluation
+            Assert.AreNotEqual(null, post);
 
         } // End of the TestAddPost method
 
@@ -61,7 +68,7 @@ namespace TestProgram
             {
                 Customer = new Customer
                 {
-                    CustomerNumber = "TEST-588",
+                    CustomerNumber = "1",
                     Name = "Testbolaget AAA",
                     Email = "test@testbolaget.se",
                     CountryCode = "NO",
@@ -70,7 +77,10 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<CustomerRoot>(config.client, post, "customers/TEST-588");
+            post = await config.fortnox_repository.Update<CustomerRoot>(config.client, post, "customers/1");
+
+            // Test evaluation
+            Assert.AreNotEqual(null, post);
 
         } // End of the TestUpdatePost method
 
@@ -81,7 +91,7 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            CustomerRoot post = await config.fortnox_repository.Get<CustomerRoot>(config.client, "customers/TEST-588");
+            CustomerRoot post = await config.fortnox_repository.Get<CustomerRoot>(config.client, "customers/10");
 
             // Test evaluation
             Assert.AreNotEqual(null, post.Customer);

@@ -47,6 +47,9 @@ namespace TestProgram
             // Add the post
             post = await config.fortnox_repository.Add<FolderRoot>(config.client, post, "archive/?path=test\\sub\\sub-folder");
 
+            // Test evaluation
+            Assert.AreNotEqual(null, post);
+
         } // End of the TestAddPost method
 
         /// <summary>
@@ -61,6 +64,9 @@ namespace TestProgram
             using (FileStream stream = System.IO.File.OpenRead(path))
             {
                 FileRoot post = await config.fortnox_repository.UploadFile<FileRoot>(config.client, stream, "bil-test.jpg", "archive?path=test\\sub");
+
+                // Test evaluation
+                Assert.AreNotEqual(null, post);
             }
 
         } // End of the TestUploadFile method
@@ -99,12 +105,18 @@ namespace TestProgram
         [TestMethod]
         public async Task TestDownloadFile()
         {
+            // Create a boolean
+            bool? success = null;
+
             // Create a file stream
             using (FileStream fileStream = System.IO.File.OpenWrite("D:\\Bilder\\fortnox.jpg"))
             {
                 // Get the file
-                await config.fortnox_repository.DownloadFile(config.client, fileStream, "archive/787ea184-ffda-491e-ac83-4d79397aa0a7");
+                success = await config.fortnox_repository.DownloadFile(config.client, fileStream, "archive/6b7507cf-8915-411b-9841-80fa997cf001");
             }
+
+            // Test evaluation
+            Assert.AreEqual(true, success);
 
         } // End of the TestDownloadFile method
 

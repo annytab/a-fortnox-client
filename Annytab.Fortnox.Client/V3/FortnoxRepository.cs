@@ -71,6 +71,9 @@ namespace Annytab.Fortnox.Client.V3
 
                     // Log the error
                     this.logger.LogError(Regex.Unescape(data));
+
+                    // Set the root object to null
+                    root = default(R);
                 }
             }
 
@@ -113,6 +116,9 @@ namespace Annytab.Fortnox.Client.V3
 
                     // Log the error
                     this.logger.LogError(Regex.Unescape(data));
+
+                    // Set the root object to null
+                    root = default(R);
                 }
             }
 
@@ -271,7 +277,7 @@ namespace Annytab.Fortnox.Client.V3
         /// <summary>
         /// Download a file
         /// </summary>
-        public async Task DownloadFile(HttpClient client, Stream stream, string uri)
+        public async Task<bool> DownloadFile(HttpClient client, Stream stream, string uri)
         {
             // Get the response
             HttpResponseMessage response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
@@ -281,6 +287,9 @@ namespace Annytab.Fortnox.Client.V3
             {
                 // Get the stream
                 await response.Content.CopyToAsync(stream);
+
+                // Return a success response
+                return true;
             }
             else
             {
@@ -289,6 +298,9 @@ namespace Annytab.Fortnox.Client.V3
 
                 // Log the error
                 this.logger.LogError(Regex.Unescape(data));
+
+                // Return a failure response
+                return false;
             }
 
         } // End of the DownloadFile method
