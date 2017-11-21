@@ -111,7 +111,7 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            OrderRoot post = await config.fortnox_repository.Get<OrderRoot>(config.client, "orders/100000");
+            OrderRoot post = await config.fortnox_repository.Get<OrderRoot>(config.client, "orders/21");
 
             // Test evaluation
             Assert.AreNotEqual(null, post.Order);

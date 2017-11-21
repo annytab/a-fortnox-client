@@ -87,6 +87,7 @@ namespace Annytab.Fortnox.Client.V3
         public string InvoiceNumber { get; set; }
         public string OCR { get; set; }
         public string OurReference { get; set; }
+        public bool? PaymentPending { get; set; }
         public string Project { get; set; }
         public decimal? RoundOffValue { get; set; }
         public IList<SupplierInvoiceRow> SupplierInvoiceRows { get; set; }
@@ -100,6 +101,7 @@ namespace Annytab.Fortnox.Client.V3
         public string VoucherYear { get; set; }
         public string VATType { get; set; }
         public string SalesType { get; set; }
+        public string AccountingMethod { get; set; }
 
         #endregion
 
@@ -133,6 +135,7 @@ namespace Annytab.Fortnox.Client.V3
             this.InvoiceNumber = null;
             this.OCR = null;
             this.OurReference = null;
+            this.PaymentPending = null;
             this.Project = null;
             this.RoundOffValue = null;
             this.SupplierInvoiceRows = null;
@@ -146,6 +149,7 @@ namespace Annytab.Fortnox.Client.V3
             this.VoucherYear = null;
             this.VATType = null;
             this.SalesType = null;
+            this.AccountingMethod = null;
 
         } // End of the constructor
 

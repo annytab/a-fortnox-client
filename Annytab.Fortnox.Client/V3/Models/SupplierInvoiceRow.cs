@@ -23,6 +23,8 @@
         public decimal? Quantity { get; set; }
         public decimal? Total { get; set; }
         public string Unit { get; set; }
+        public string StockPointCode { get; set; }
+        public string StockLocationCode { get; set; }
 
         #endregion
 
@@ -50,6 +52,8 @@
             this.Quantity = null;
             this.Total = null;
             this.Unit = null;
+            this.StockPointCode = null;
+            this.StockLocationCode = null;
 
         } // End of the constructor
 

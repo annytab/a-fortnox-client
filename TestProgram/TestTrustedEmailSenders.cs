@@ -56,6 +56,7 @@ namespace TestProgram
         {
             // Get a list
             EmailSendersRoot post = await config.fortnox_repository.Get<EmailSendersRoot>(config.client, "emailsenders?limit=2&page=1");
+            //EmailSendersRoot post = await config.fortnox_repository.Get<EmailSendersRoot>(config.client, "emailsenders");
 
             // Test evaluation
             Assert.AreNotEqual(0, post.EmailSenders.TrustedSenders.Count);

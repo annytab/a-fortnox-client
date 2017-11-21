@@ -78,7 +78,7 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            SupplierRoot post = await config.fortnox_repository.Get<SupplierRoot>(config.client, "suppliers/A500PP");
+            SupplierRoot post = await config.fortnox_repository.Get<SupplierRoot>(config.client, "suppliers/1");
 
             // Test evaluation
             Assert.AreNotEqual(null, post.Supplier);

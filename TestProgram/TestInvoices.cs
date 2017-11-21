@@ -124,7 +124,7 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            InvoiceRoot post = await config.fortnox_repository.Get<InvoiceRoot>(config.client, "invoices/26");
+            InvoiceRoot post = await config.fortnox_repository.Get<InvoiceRoot>(config.client, "invoices/28");
 
             // Test evaluation
             Assert.AreNotEqual(null, post.Invoice);

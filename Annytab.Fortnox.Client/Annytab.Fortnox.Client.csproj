@@ -9,12 +9,12 @@
     <Copyright>Copyright © 2017</Copyright>
     <PackageIconUrl>http://www.annytab.com/annytab_logo_512x512.png</PackageIconUrl>
     <PackageTags>ASP.NET, .NET, Core, C#, Fortnox, Api, Client</PackageTags>
-    <PackageReleaseNotes>Return null or a boolean if there is an error, this to be able to know when there is an error.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added more fields to offer, order, invoice and supplier invoice.</PackageReleaseNotes>
     <NeutralLanguage>English</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/annytab/a-fortnox-client</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/annytab/a-fortnox-client/blob/master/LICENSE</PackageLicenseUrl>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

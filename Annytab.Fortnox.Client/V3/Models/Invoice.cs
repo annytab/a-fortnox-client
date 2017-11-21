@@ -112,6 +112,7 @@ namespace Annytab.Fortnox.Client.V3
         public string InvoiceDate { get; set; }
         public string InvoicePeriodEnd { get; set; }
         public string InvoicePeriodStart { get; set; }
+        public string InvoiceReference { get; set; }
         public IList<InvoiceRow> InvoiceRows { get; set; }
         public string InvoiceType { get; set; }
         public IList<Label> Labels { get; set; }
@@ -131,6 +132,8 @@ namespace Annytab.Fortnox.Client.V3
         public string PriceList { get; set; }
         public string PrintTemplate { get; set; }
         public string Project { get; set; }
+        public bool? WarehouseReady { get; set; }
+        public string OutboundDate { get; set; }
         public string Remarks { get; set; }
         public Int32? Reminders { get; set; }
         public decimal? RoundOff { get; set; }
@@ -149,6 +152,7 @@ namespace Annytab.Fortnox.Client.V3
         public string YourOrderNumber { get; set; }
         public string YourReference { get; set; }
         public string ZipCode { get; set; }
+        public string AccountingMethod { get; set; }
 
         #endregion
 
@@ -205,6 +209,7 @@ namespace Annytab.Fortnox.Client.V3
             this.InvoiceDate = null;
             this.InvoicePeriodEnd = null;
             this.InvoicePeriodStart = null;
+            this.InvoiceReference = null;
             this.InvoiceRows = null;
             this.InvoiceType = null;
             this.Labels = null;
@@ -224,6 +229,8 @@ namespace Annytab.Fortnox.Client.V3
             this.PriceList = null;
             this.PrintTemplate = null;
             this.Project = null;
+            this.WarehouseReady = null;
+            this.OutboundDate = null;
             this.Remarks = null;
             this.Reminders = null;
             this.RoundOff = null;
@@ -242,6 +249,7 @@ namespace Annytab.Fortnox.Client.V3
             this.YourOrderNumber = null;
             this.YourReference = null;
             this.ZipCode = null;
+            this.AccountingMethod = null;
 
         } // End of the constructor
 

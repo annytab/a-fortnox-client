@@ -86,6 +86,7 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? CurrencyUnit { get; set; }
         public string CustomerName { get; set; }
         public string CustomerNumber { get; set; }
+        public bool? IsDelivery { get; set; }
         public string DeliveryAddress1 { get; set; }
         public string DeliveryAddress2 { get; set; }
         public string DeliveryCity { get; set; }
@@ -102,9 +103,10 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? Gross { get; set; }
         public bool? HouseWork { get; set; }
         public string InvoiceReference { get; set; }
+        public IList<Label> Labels { get; set; }
         public string Language { get; set; }
         public decimal? Net { get; set; }
-        public string NotCompleted { get; set; }
+        public bool? NotCompleted { get; set; }
         public string OfferReference { get; set; }
         public string OrderDate { get; set; }
         public IList<OrderRow> OrderRows { get; set; }
@@ -115,6 +117,8 @@ namespace Annytab.Fortnox.Client.V3
         public string PriceList { get; set; }
         public string PrintTemplate { get; set; }
         public string Project { get; set; }
+        public bool? WarehouseReady { get; set; }
+        public string OutboundDate { get; set; }
         public string Remarks { get; set; }
         public decimal? RoundOff { get; set; }
         public bool? Sent { get; set; }
@@ -160,6 +164,7 @@ namespace Annytab.Fortnox.Client.V3
             this.CurrencyUnit = null;
             this.CustomerName = null;
             this.CustomerNumber = null;
+            this.IsDelivery = null;
             this.DeliveryAddress1 = null;
             this.DeliveryAddress2 = null;
             this.DeliveryCity = null;
@@ -176,6 +181,7 @@ namespace Annytab.Fortnox.Client.V3
             this.Gross = null;
             this.HouseWork = null;
             this.InvoiceReference = null;
+            this.Labels = null;
             this.Language = null;
             this.Net = null;
             this.NotCompleted = null;
@@ -189,6 +195,8 @@ namespace Annytab.Fortnox.Client.V3
             this.PriceList = null;
             this.PrintTemplate = null;
             this.Project = null;
+            this.WarehouseReady = null;
+            this.OutboundDate = null;
             this.Remarks = null;
             this.RoundOff = null;
             this.Sent = null;

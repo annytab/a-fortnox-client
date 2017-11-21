@@ -101,6 +101,7 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? Gross { get; set; }
         public bool? HouseWork { get; set; }
         public string InvoiceReference { get; set; }
+        public IList<Label> Labels { get; set; }
         public string Language { get; set; }
         public decimal? Net { get; set; }
         public bool? NotCompleted { get; set; }
@@ -173,6 +174,7 @@ namespace Annytab.Fortnox.Client.V3
             this.Gross = null;
             this.HouseWork = null;
             this.InvoiceReference = null;
+            this.Labels = null;
             this.Language = null;
             this.Net = null;
             this.NotCompleted = null;

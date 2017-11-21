@@ -24,6 +24,7 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? Price { get; set; }
         public decimal? PriceExcludingVAT { get; set; }
         public string Project { get; set; }
+        public string StockPointCode { get; set; }
         public decimal? Total { get; set; }
         public decimal? TotalExcludingVAT { get; set; }
         public string Unit { get; set; }
@@ -54,6 +55,7 @@ namespace Annytab.Fortnox.Client.V3
             this.Price = null;
             this.PriceExcludingVAT = null;
             this.Project = null;
+            this.StockPointCode = null;
             this.Total = null;
             this.TotalExcludingVAT = null;
             this.Unit = null;
