@@ -41,7 +41,7 @@ namespace TestProgram
             {
                 Invoice = new Invoice
                 {
-                    CustomerNumber = "1",
+                    CustomerNumber = "333333333333333333",
                     InvoiceRows = new List<InvoiceRow>
                     {
                         new InvoiceRow
@@ -87,7 +87,7 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<InvoiceRoot>(config.client, post, "invoices/26");
+            post = await config.fortnox_repository.Update<InvoiceRoot>(config.client, post, "invoices/88");
 
         } // End of the TestUpdatePost method
 
@@ -98,7 +98,7 @@ namespace TestProgram
         public async Task TestBookkeep()
         {
             // Run an action
-            InvoiceRoot post = await config.fortnox_repository.Action<InvoiceRoot>(config.client, "invoices/25/bookkeep");
+            InvoiceRoot post = await config.fortnox_repository.Action<InvoiceRoot>(config.client, "invoices/88/bookkeep");
 
         } // End of the TestBookkeep method
 
@@ -109,10 +109,10 @@ namespace TestProgram
         public async Task TestPreview()
         {
             // Create a file stream
-            using (FileStream fileStream = System.IO.File.OpenWrite("D:\\Bilder\\invoice-25.pdf"))
+            using (FileStream fileStream = System.IO.File.OpenWrite("D:\\Bilder\\invoice-26.pdf"))
             {
                 // Get the file
-                await config.fortnox_repository.DownloadFile(config.client, fileStream, "invoices/25/preview");
+                await config.fortnox_repository.DownloadFile(config.client, fileStream, "invoices/26/preview");
             }
 
         } // End of the TestPreview method
@@ -124,7 +124,7 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            InvoiceRoot post = await config.fortnox_repository.Get<InvoiceRoot>(config.client, "invoices/28");
+            InvoiceRoot post = await config.fortnox_repository.Get<InvoiceRoot>(config.client, "invoices/2");
 
             // Test evaluation
             Assert.AreNotEqual(null, post.Invoice);

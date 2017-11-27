@@ -40,7 +40,7 @@ namespace TestProgram
             {
                 Folder = new Folder
                 {
-                   Name = "sub-hej"
+                   Name = "sub-folder"
                 }
             };
 
@@ -81,7 +81,7 @@ namespace TestProgram
             FolderRoot post = await config.fortnox_repository.Get<FolderRoot>(config.client, "archive?path=test\\sub");
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Folder.Folders.Count);
+            Assert.AreNotEqual(0, post.Folder.Files.Count);
 
         } // End of the TestGetList method
 
@@ -112,7 +112,7 @@ namespace TestProgram
             using (FileStream fileStream = System.IO.File.OpenWrite("D:\\Bilder\\fortnox.jpg"))
             {
                 // Get the file
-                success = await config.fortnox_repository.DownloadFile(config.client, fileStream, "archive/6b7507cf-8915-411b-9841-80fa997cf001");
+                success = await config.fortnox_repository.DownloadFile(config.client, fileStream, "archive/f02c1078-0071-451b-aafe-af1a64a493eb");
             }
 
             // Test evaluation
@@ -127,7 +127,7 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Delete a folder or a file (archive?path=test\\sub) 
-            bool success = await config.fortnox_repository.Delete(config.client, "archive/787ea184-ffda-491e-ac83-4d79397aa0a7");
+            bool success = await config.fortnox_repository.Delete(config.client, "archive/f02c1078-0071-451b-aafe-af1a64a493eb");
 
             // Test evaluation
             Assert.AreEqual(true, success);

@@ -79,7 +79,7 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            ArticleRoot post = await config.fortnox_repository.Get<ArticleRoot>(config.client, "articles/TEST-58878");
+            ArticleRoot post = await config.fortnox_repository.Get<ArticleRoot>(config.client, "articles/1");
 
             // Test evaluation
             Assert.AreNotEqual(null, post.Article);

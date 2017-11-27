@@ -49,36 +49,44 @@ namespace Annytab.Fortnox.Client.V3
             // Convert the post to json
             string json = JsonConvert.SerializeObject(root, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
+            // Create the post to return
+            R post = default(R);
+
             // Send data as application/json data
             using (StringContent content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                // Get the response
-                HttpResponseMessage response = await client.PostAsync(uri, content);
-
-                // Check the status code for the response
-                if (response.IsSuccessStatusCode == true)
+                try
                 {
-                    // Get string data
-                    string data = await response.Content.ReadAsStringAsync();
+                    // Get the response
+                    HttpResponseMessage response = await client.PostAsync(uri, content);
 
-                    // Deserialize the content 
-                    root = JsonConvert.DeserializeObject<R>(data);
+                    // Check the status code for the response
+                    if (response.IsSuccessStatusCode == true)
+                    {
+                        // Get string data
+                        string data = await response.Content.ReadAsStringAsync();
+
+                        // Deserialize the content 
+                        post = JsonConvert.DeserializeObject<R>(data);
+                    }
+                    else
+                    {
+                        // Get string data
+                        string data = await response.Content.ReadAsStringAsync();
+
+                        // Log the error
+                        this.logger.LogError($"Add: {uri}. {Regex.Unescape(data)}");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Get string data
-                    string data = await response.Content.ReadAsStringAsync();
-
-                    // Log the error
-                    this.logger.LogError(Regex.Unescape(data));
-
-                    // Set the root object to null
-                    root = default(R);
+                    // Log the exception
+                    this.logger.LogError(ex, $"Add: {uri}.", null);
                 }
             }
 
             // Return the post
-            return root;
+            return post;
 
         } // End of the Add method
 
@@ -94,36 +102,44 @@ namespace Annytab.Fortnox.Client.V3
             // Convert the post to json
             string json = JsonConvert.SerializeObject(root, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 
+            // Create the post to return
+            R post = default(R);
+
             // Send data as application/json data
             using (StringContent content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                // Get the response
-                HttpResponseMessage response = await client.PutAsync(uri, content);
-
-                // Check the status code for the response
-                if (response.IsSuccessStatusCode == true)
+                try
                 {
-                    // Get string data
-                    string data = await response.Content.ReadAsStringAsync();
+                    // Get the response
+                    HttpResponseMessage response = await client.PutAsync(uri, content);
 
-                    // Deserialize the content 
-                    root = JsonConvert.DeserializeObject<R>(data);
+                    // Check the status code for the response
+                    if (response.IsSuccessStatusCode == true)
+                    {
+                        // Get string data
+                        string data = await response.Content.ReadAsStringAsync();
+
+                        // Deserialize the content 
+                        post = JsonConvert.DeserializeObject<R>(data);
+                    }
+                    else
+                    {
+                        // Get string data
+                        string data = await response.Content.ReadAsStringAsync();
+
+                        // Log the error
+                        this.logger.LogError($"Update: {uri}. {Regex.Unescape(data)}");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Get string data
-                    string data = await response.Content.ReadAsStringAsync();
-
-                    // Log the error
-                    this.logger.LogError(Regex.Unescape(data));
-
-                    // Set the root object to null
-                    root = default(R);
+                    // Log the exception
+                    this.logger.LogError(ex, $"Update: {uri}.", null);
                 }
             }
 
             // Return the post
-            return root;
+            return post;
 
         } // End of the Update method
 
@@ -132,32 +148,40 @@ namespace Annytab.Fortnox.Client.V3
         /// </summary>
         public async Task<R> Action<R>(HttpClient client, string uri)
         {
-            // Create the object to return
-            R root = default(R);
+            // Create the post to return
+            R post = default(R);
 
-            // Get the response
-            HttpResponseMessage response = await client.PutAsync(uri, null);
-
-            // Check the status code for the response
-            if (response.IsSuccessStatusCode == true)
+            try
             {
-                // Get string data
-                string data = await response.Content.ReadAsStringAsync();
+                // Get the response
+                HttpResponseMessage response = await client.PutAsync(uri, null);
 
-                // Deserialize the data
-                root = JsonConvert.DeserializeObject<R>(data);
+                // Check the status code for the response
+                if (response.IsSuccessStatusCode == true)
+                {
+                    // Get string data
+                    string data = await response.Content.ReadAsStringAsync();
+
+                    // Deserialize the data
+                    post = JsonConvert.DeserializeObject<R>(data);
+                }
+                else
+                {
+                    // Get string data
+                    string data = await response.Content.ReadAsStringAsync();
+
+                    // Log the error
+                    this.logger.LogError($"Action: {uri}. {Regex.Unescape(data)}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Get string data
-                string data = await response.Content.ReadAsStringAsync();
-
-                // Log the error
-                this.logger.LogError(Regex.Unescape(data));
+                // Log the exception
+                this.logger.LogError(ex, $"Action: {uri}.", null);
             }
 
             // Return the post
-            return root;
+            return post;
 
         } // End of the Action method
 
@@ -170,32 +194,40 @@ namespace Annytab.Fortnox.Client.V3
         /// </summary>
         public async Task<R> Get<R>(HttpClient client, string uri)
         {
-            // Create the object to return
-            R root = default(R);
+            // Create the post to return
+            R post = default(R);
 
-            // Get the response
-            HttpResponseMessage response = await client.GetAsync(uri);
-
-            // Check the status code for the response
-            if (response.IsSuccessStatusCode == true)
+            try
             {
-                // Get string data
-                string data = await response.Content.ReadAsStringAsync();
+                // Get the response
+                HttpResponseMessage response = await client.GetAsync(uri);
 
-                // Deserialize the data
-                root = JsonConvert.DeserializeObject<R>(data);
+                // Check the status code for the response
+                if (response.IsSuccessStatusCode == true)
+                {
+                    // Get string data
+                    string data = await response.Content.ReadAsStringAsync();
+
+                    // Deserialize the data
+                    post = JsonConvert.DeserializeObject<R>(data);
+                }
+                else
+                {
+                    // Get string data
+                    string data = await response.Content.ReadAsStringAsync();
+
+                    // Log the error
+                    this.logger.LogError($"Get: {uri}. {Regex.Unescape(data)}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Get string data
-                string data = await response.Content.ReadAsStringAsync();
-
-                // Log the error
-                this.logger.LogError(Regex.Unescape(data));
+                // Log the exception
+                this.logger.LogError(ex, $"Get: {uri}.", null);
             }
 
             // Return the post
-            return root;
+            return post;
 
         } // End of the Get method
 
@@ -208,17 +240,28 @@ namespace Annytab.Fortnox.Client.V3
         /// </summary>
         public async Task<bool> Delete(HttpClient client, string uri)
         {
-            // Get the response
-            HttpResponseMessage response = await client.DeleteAsync(uri);
-
-            // Check the status code for the response
-            if (response.IsSuccessStatusCode == false)
+            try
             {
-                // Get string data
-                string data = await response.Content.ReadAsStringAsync();
+                // Get the response
+                HttpResponseMessage response = await client.DeleteAsync(uri);
 
-                // Log the error
-                this.logger.LogError(Regex.Unescape(data));
+                // Check the status code for the response
+                if (response.IsSuccessStatusCode == false)
+                {
+                    // Get string data
+                    string data = await response.Content.ReadAsStringAsync();
+
+                    // Log the error
+                    this.logger.LogError($"Delete: {uri}. {Regex.Unescape(data)}");
+
+                    // Return false
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                this.logger.LogError(ex, $"Delete: {uri}.", null);
 
                 // Return false
                 return false;
@@ -247,25 +290,33 @@ namespace Annytab.Fortnox.Client.V3
                 // Add content
                 content.Add(new StreamContent(stream), "file", file_name);
 
-                // Get the response
-                HttpResponseMessage response = await client.PostAsync(uri, content);
-
-                // Check the status code for the response
-                if (response.IsSuccessStatusCode == true)
+                try
                 {
-                    // Get the data
-                    string data = await response.Content.ReadAsStringAsync();
+                    // Get the response
+                    HttpResponseMessage response = await client.PostAsync(uri, content);
 
-                    // Deserialize the content to File metadata
-                    post = JsonConvert.DeserializeObject<R>(data);
+                    // Check the status code for the response
+                    if (response.IsSuccessStatusCode == true)
+                    {
+                        // Get the data
+                        string data = await response.Content.ReadAsStringAsync();
+
+                        // Deserialize the content to File metadata
+                        post = JsonConvert.DeserializeObject<R>(data);
+                    }
+                    else
+                    {
+                        // Get string data
+                        string data = await response.Content.ReadAsStringAsync();
+
+                        // Log the error
+                        this.logger.LogError($"UploadFile: {uri}. {Regex.Unescape(data)}");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    // Get string data
-                    string data = await response.Content.ReadAsStringAsync();
-
-                    // Log the error
-                    this.logger.LogError(Regex.Unescape(data));
+                    // Log the exception
+                    this.logger.LogError(ex, $"UploadFile: {uri}.", null);
                 }
             }
 
@@ -279,29 +330,40 @@ namespace Annytab.Fortnox.Client.V3
         /// </summary>
         public async Task<bool> DownloadFile(HttpClient client, Stream stream, string uri)
         {
-            // Get the response
-            HttpResponseMessage response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
+            // Create a success boolean
+            bool success = false;
 
-            // Check the status code for the response
-            if (response.IsSuccessStatusCode == true)
+            try
             {
-                // Get the stream
-                await response.Content.CopyToAsync(stream);
+                // Get the response
+                HttpResponseMessage response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
 
-                // Return a success response
-                return true;
+                // Check the status code for the response
+                if (response.IsSuccessStatusCode == true)
+                {
+                    // Get the stream
+                    await response.Content.CopyToAsync(stream);
+
+                    // Set output variables
+                    success = true;
+                }
+                else
+                {
+                    // Get string data
+                    string data = await response.Content.ReadAsStringAsync();
+
+                    // Log the error
+                    this.logger.LogError($"DownloadFile: {uri}. {Regex.Unescape(data)}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Get string data
-                string data = await response.Content.ReadAsStringAsync();
-
-                // Log the error
-                this.logger.LogError(Regex.Unescape(data));
-
-                // Return a failure response
-                return false;
+                // Log the exception
+                this.logger.LogError(ex, $"DownloadFile: {uri}.", null);
             }
+
+            // Return a success boolean
+            return success;
 
         } // End of the DownloadFile method
 
