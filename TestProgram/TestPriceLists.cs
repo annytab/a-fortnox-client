@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -46,7 +47,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<PriceListRoot>(config.client, post, "pricelists");
+            FortnoxResponse<PriceListRoot> fr = await config.fortnox_client.Add<PriceListRoot>(post, "pricelists");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -68,7 +78,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<PriceListRoot>(config.client, post, "pricelists/AD");
+            FortnoxResponse<PriceListRoot> fr = await config.fortnox_client.Update<PriceListRoot>(post, "pricelists/AD");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -79,10 +98,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            PriceListRoot post = await config.fortnox_repository.Get<PriceListRoot>(config.client, "pricelists/AD");
+            FortnoxResponse<PriceListRoot> fr = await config.fortnox_client.Get<PriceListRoot>("pricelists/AD");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.PriceList);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -93,10 +118,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            PriceListsRoot post = await config.fortnox_repository.Get<PriceListsRoot>(config.client, "pricelists?limit=2&page=1");
+            FortnoxResponse<PriceListsRoot> fr = await config.fortnox_client.Get<PriceListsRoot>("pricelists?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.PriceLists.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

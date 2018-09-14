@@ -67,7 +67,6 @@ namespace Annytab.Fortnox.Client.V3
 
         [JsonProperty("@url")]
         public string Url { get; set; }
-        public bool? Active { get; set; }
         public string ArticleNumber { get; set; }
         public bool? Bulky { get; set; }
         public string ConstructionAccount { get; set; }
@@ -81,6 +80,7 @@ namespace Annytab.Fortnox.Client.V3
         public Int32? Height { get; set; }
         public bool? Housework { get; set; }
         public string HouseworkType { get; set; }
+        public bool? Active { get; set; }
         public string Manufacturer { get; set; }
         public string ManufacturerArticleNumber { get; set; }
         public string Note { get; set; }
@@ -89,7 +89,6 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? QuantityInStock { get; set; }
         public decimal? ReservedQuantity { get; set; }
         public string SalesAccount { get; set; }
-        public decimal? SalesPrice { get; set; }
         public bool? StockGoods { get; set; }
         public string StockPlace { get; set; }
         public decimal? StockValue { get; set; }
@@ -103,6 +102,13 @@ namespace Annytab.Fortnox.Client.V3
         public Int32? Weight { get; set; }
         public Int32? Width { get; set; }
         public bool? Expired { get; set; }
+        public decimal? SalesPrice { get; set; }
+        public string CostCalculationMethod { get; set; }
+        public string StockAccount { get; set; }
+        public string StockChangeAccount { get; set; }
+        public decimal? DirectCost { get; set; }
+        public decimal? FreightCost { get; set; }
+        public decimal? OtherCost { get; set; }
 
         #endregion
 
@@ -150,6 +156,12 @@ namespace Annytab.Fortnox.Client.V3
             this.Weight = null;
             this.Width = null;
             this.Expired = null;
+            this.CostCalculationMethod = null;
+            this.StockAccount = null;
+            this.StockChangeAccount = null;
+            this.DirectCost = null;
+            this.FreightCost = null;
+            this.OtherCost = null;
 
         } // End of the constructor
 

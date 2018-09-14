@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -41,14 +42,25 @@ namespace TestProgram
                 {
                     EmployeeId = "1",
                     SalaryCode = "1321",
-                    Date = "2017-11-05",
+                    Date = "2016-01-06",
                     Number = 5,
-                    Amount = 10000M
+                    Amount = 10000M,
+                    CostCenter = "TT2",
+                    Project = "A2"
                 }
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<SalaryTransactionRoot>(config.client, post, "salarytransactions");
+            FortnoxResponse<SalaryTransactionRoot> fr = await config.fortnox_client.Add<SalaryTransactionRoot>(post, "salarytransactions");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -69,7 +81,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<SalaryTransactionRoot>(config.client, post, "salarytransactions/1");
+            FortnoxResponse<SalaryTransactionRoot> fr = await config.fortnox_client.Update<SalaryTransactionRoot>(post, "salarytransactions/3");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -80,10 +101,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            SalaryTransactionRoot post = await config.fortnox_repository.Get<SalaryTransactionRoot>(config.client, "salarytransactions/1");
+            FortnoxResponse<SalaryTransactionRoot> fr = await config.fortnox_client.Get<SalaryTransactionRoot>("salarytransactions/5");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.SalaryTransaction);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -94,10 +121,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            SalaryTransactionsRoot post = await config.fortnox_repository.Get<SalaryTransactionsRoot>(config.client, "salarytransactions?limit=2&page=1");
+            FortnoxResponse<SalaryTransactionsRoot> fr = await config.fortnox_client.Get<SalaryTransactionsRoot>("salarytransactions?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.SalaryTransactions.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -108,10 +141,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "salarytransactions/2");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("salarytransactions/1");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

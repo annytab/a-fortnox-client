@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -46,7 +47,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<ModeOfPaymentRoot>(config.client, post, "modesofpayments");
+            FortnoxResponse<ModeOfPaymentRoot> fr = await config.fortnox_client.Add<ModeOfPaymentRoot>(post, "modesofpayments");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -68,7 +78,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<ModeOfPaymentRoot>(config.client, post, "modesofpayments/LB");
+            FortnoxResponse<ModeOfPaymentRoot> fr = await config.fortnox_client.Update<ModeOfPaymentRoot>(post, "modesofpayments/LB");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -79,10 +98,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            ModeOfPaymentRoot post = await config.fortnox_repository.Get<ModeOfPaymentRoot>(config.client, "modesofpayments/LB");
+            FortnoxResponse<ModeOfPaymentRoot> fr = await config.fortnox_client.Get<ModeOfPaymentRoot>("modesofpayments/LB");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.ModeOfPayment);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -93,10 +118,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            ModesOfPaymentsRoot post = await config.fortnox_repository.Get<ModesOfPaymentsRoot>(config.client, "modesofpayments?limit=2&page=1");
+            FortnoxResponse<ModesOfPaymentsRoot> fr = await config.fortnox_client.Get<ModesOfPaymentsRoot>("modesofpayments?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.ModesOfPayments.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

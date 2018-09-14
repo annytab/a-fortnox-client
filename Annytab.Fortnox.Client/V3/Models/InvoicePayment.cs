@@ -81,6 +81,7 @@ namespace Annytab.Fortnox.Client.V3
         public string InvoiceOCR { get; set; }
         public decimal? InvoiceTotal { get; set; }
         public string ModeOfPayment { get; set; }
+        public string ModeOfPaymentAccount { get; set; }
         public string Number { get; set; }
         public string PaymentDate { get; set; }
         public string VoucherNumber { get; set; }
@@ -115,6 +116,7 @@ namespace Annytab.Fortnox.Client.V3
             this.InvoiceOCR = null;
             this.InvoiceTotal = null;
             this.ModeOfPayment = null;
+            this.ModeOfPaymentAccount = null;
             this.Number = null;
             this.PaymentDate = null;
             this.VoucherNumber = null;

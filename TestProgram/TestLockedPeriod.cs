@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -35,10 +36,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            LockedPeriodRoot post = await config.fortnox_repository.Get<LockedPeriodRoot>(config.client, "settings/lockedperiod");
+            FortnoxResponse<LockedPeriodRoot> fr = await config.fortnox_client.Get<LockedPeriodRoot>("settings/lockedperiod");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.LockedPeriod);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 

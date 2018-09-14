@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -35,10 +36,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            CompanySettingsRoot post = await config.fortnox_repository.Get<CompanySettingsRoot>(config.client, "settings/company");
+            FortnoxResponse<CompanySettingsRoot> fr = await config.fortnox_client.Get<CompanySettingsRoot>("settings/company");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.CompanySettings);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 

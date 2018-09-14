@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -39,7 +40,7 @@ namespace TestProgram
             {
                 Customer = new Customer
                 {
-                    CustomerNumber = "TEST-FREDDE",
+                    CustomerNumber = "TEST-OLLE",
                     Name = "Testbolaget",
                     Email = "test@testbolaget.se",
                     DefaultTemplates = new DefaultTemplates
@@ -50,10 +51,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<CustomerRoot>(config.client, post, "customers");
+            FortnoxResponse<CustomerRoot> fr = await config.fortnox_client.Add<CustomerRoot>(post, "customers");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -68,7 +75,7 @@ namespace TestProgram
             {
                 Customer = new Customer
                 {
-                    CustomerNumber = "1",
+                    CustomerNumber = "TEST-OLLE",
                     Name = "Testbolaget AAA",
                     Email = "test@testbolaget.se",
                     CountryCode = "NO",
@@ -77,10 +84,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<CustomerRoot>(config.client, post, "customers/1");
+            FortnoxResponse<CustomerRoot> fr = await config.fortnox_client.Update<CustomerRoot>(post, "customers/TEST-OLLE");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -91,10 +104,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            CustomerRoot post = await config.fortnox_repository.Get<CustomerRoot>(config.client, "customers/10");
+            FortnoxResponse<CustomerRoot> fr = await config.fortnox_client.Get<CustomerRoot>("customers/1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Customer);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -105,10 +124,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            CustomersRoot post = await config.fortnox_repository.Get<CustomersRoot>(config.client, "customers?email=test@testbolaget.se&limit=5&page=1");
+            FortnoxResponse<CustomersRoot> fr = await config.fortnox_client.Get<CustomersRoot>("customers?email=test@testbolaget.se&limit=5&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Customers.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -119,10 +144,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "customers/TEST-588");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("customers/TEST-OLLE");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

@@ -8,9 +8,9 @@
         #region Variables
 
         public string Invoice { get; set; }
-        public string Offer { get; set; }
         public string Order { get; set; }
-
+        public string Offer { get; set; }
+        
         #endregion
 
         #region Constructors

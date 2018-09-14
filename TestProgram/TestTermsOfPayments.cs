@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -45,7 +46,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<TermsOfPaymentRoot>(config.client, post, "termsofpayments");
+            FortnoxResponse<TermsOfPaymentRoot> fr = await config.fortnox_client.Add<TermsOfPaymentRoot>(post, "termsofpayments");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -66,7 +76,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<TermsOfPaymentRoot>(config.client, post, "termsofpayments/PAYPAL");
+            FortnoxResponse<TermsOfPaymentRoot> fr = await config.fortnox_client.Update<TermsOfPaymentRoot>(post, "termsofpayments/PAYPAL");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -77,10 +96,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            TermsOfPaymentRoot post = await config.fortnox_repository.Get<TermsOfPaymentRoot>(config.client, "termsofpayments/PAYPAL");
+            FortnoxResponse<TermsOfPaymentRoot> fr = await config.fortnox_client.Get<TermsOfPaymentRoot>("termsofpayments/PAYPAL");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.TermsOfPayment);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -91,10 +116,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            TermsOfPaymentsRoot post = await config.fortnox_repository.Get<TermsOfPaymentsRoot>(config.client, "termsofpayments?limit=5&page=1");
+            FortnoxResponse<TermsOfPaymentsRoot> fr = await config.fortnox_client.Get<TermsOfPaymentsRoot>("termsofpayments?limit=5&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.TermsOfPayments.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -105,10 +136,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "termsofpayments/PAYPAL");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("termsofpayments/PAYPAL");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

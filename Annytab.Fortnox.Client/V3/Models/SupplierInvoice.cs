@@ -102,6 +102,7 @@ namespace Annytab.Fortnox.Client.V3
         public string VATType { get; set; }
         public string SalesType { get; set; }
         public string AccountingMethod { get; set; }
+        public string FinalPayDate { get; set; }
 
         #endregion
 
@@ -150,6 +151,7 @@ namespace Annytab.Fortnox.Client.V3
             this.VATType = null;
             this.SalesType = null;
             this.AccountingMethod = null;
+            this.FinalPayDate = null;
 
         } // End of the constructor
 

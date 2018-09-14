@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -45,7 +46,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<TermsOfDeliveryRoot>(config.client, post, "termsofdeliveries");
+            FortnoxResponse<TermsOfDeliveryRoot> fr = await config.fortnox_client.Add<TermsOfDeliveryRoot>(post, "termsofdeliveries");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -66,7 +76,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<TermsOfDeliveryRoot>(config.client, post, "termsofdeliveries/WEB");
+            FortnoxResponse<TermsOfDeliveryRoot> fr = await config.fortnox_client.Update<TermsOfDeliveryRoot>(post, "termsofdeliveries/WEB");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -77,10 +96,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            TermsOfDeliveryRoot post = await config.fortnox_repository.Get<TermsOfDeliveryRoot>(config.client, "termsofdeliveries/WEB");
+            FortnoxResponse<TermsOfDeliveryRoot> fr = await config.fortnox_client.Get<TermsOfDeliveryRoot>("termsofdeliveries/WEB");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.TermsOfDelivery);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -91,10 +116,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            TermsOfDeliveriesRoot post = await config.fortnox_repository.Get<TermsOfDeliveriesRoot>(config.client, "termsofdeliveries");
+            FortnoxResponse<TermsOfDeliveriesRoot> fr = await config.fortnox_client.Get<TermsOfDeliveriesRoot>("termsofdeliveries");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.TermsOfDeliveries.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -59,7 +60,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<OfferRoot>(config.client, post, "offers");
+            FortnoxResponse<OfferRoot> fr = await config.fortnox_client.Add<OfferRoot>(post, "offers");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -74,7 +84,7 @@ namespace TestProgram
             {
                 Offer = new Offer
                 {
-                    CustomerNumber = "10",
+                    CustomerNumber = "11",
                     OfferRows = new List<OfferRow>
                     {
                         new OfferRow
@@ -93,7 +103,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<OfferRoot>(config.client, post, "offers/1");
+            FortnoxResponse<OfferRoot> fr = await config.fortnox_client.Update<OfferRoot>(post, "offers/19");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -104,10 +123,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            OfferRoot post = await config.fortnox_repository.Get<OfferRoot>(config.client, "offers/17");
+            FortnoxResponse<OfferRoot> fr = await config.fortnox_client.Get<OfferRoot>("offers/17");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Offer);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -118,10 +143,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list 
-            OffersRoot post = await config.fortnox_repository.Get<OffersRoot>(config.client, "offers?limit=2&page=1");
+            FortnoxResponse<OffersRoot> fr = await config.fortnox_client.Get<OffersRoot>("offers?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Offers.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

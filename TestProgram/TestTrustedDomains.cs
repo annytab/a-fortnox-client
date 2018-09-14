@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -44,7 +45,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<TrustedDomainRoot>(config.client, post, "emailtrusteddomains");
+            FortnoxResponse<TrustedDomainRoot> fr = await config.fortnox_client.Add<TrustedDomainRoot>(post, "emailtrusteddomains");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -55,10 +65,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            TrustedDomainRoot post = await config.fortnox_repository.Get<TrustedDomainRoot>(config.client, "emailtrusteddomains/1");
+            FortnoxResponse<TrustedDomainRoot> fr = await config.fortnox_client.Get<TrustedDomainRoot>("emailtrusteddomains/4");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.TrustedDomain);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -69,10 +85,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            TrustedDomainsRoot post = await config.fortnox_repository.Get<TrustedDomainsRoot>(config.client, "emailtrusteddomains?limit=2&page=1");
+            FortnoxResponse<TrustedDomainsRoot> fr = await config.fortnox_client.Get<TrustedDomainsRoot>("emailtrusteddomains?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.TrustedDomains.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -83,10 +105,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "emailtrusteddomains/1");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("emailtrusteddomains/3");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

@@ -90,6 +90,8 @@ namespace Annytab.Fortnox.Client.V3
         public string TaxColumn { get; set; }
         public decimal? NonRecurringTax { get; set; }
         public bool? Inactive { get; set; }
+        public string ClearingNo { get; set; }
+        public string BankAccountNo { get; set; }
 
         #endregion
 
@@ -128,6 +130,8 @@ namespace Annytab.Fortnox.Client.V3
             this.TaxColumn = null;
             this.NonRecurringTax = null;
             this.Inactive = null;
+            this.ClearingNo = null;
+            this.BankAccountNo = null;
 
         } // End of the constructor
 

@@ -66,15 +66,15 @@ namespace Annytab.Fortnox.Client.V3
 
         [JsonProperty("@url")]
         public string Url { get; set; }
-        public bool? Active { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
         public string City { get; set; }
-        public string Comments { get; set; }
-        public string CostCenter { get; set; }
         public string Country { get; set; }
-        public string CountryCode { get; set; }
+        public string Comments { get; set; }
         public string Currency { get; set; }
+        public string CostCenter { get; set; }
+        public string CountryCode { get; set; }
+        public bool? Active { get; set; }
         public string CustomerNumber { get; set; }
         public DefaultDeliveryTypes DefaultDeliveryTypes { get; set; }
         public DefaultTemplates DefaultTemplates { get; set; }
@@ -98,6 +98,7 @@ namespace Annytab.Fortnox.Client.V3
         public string EmailOrder { get; set; }
         public string EmailOrderBCC { get; set; }
         public string EmailOrderCC { get; set; }
+        public string ExternalReference { get; set; }
         public string Fax { get; set; }
         public string GLN { get; set; }
         public string GLNDelivery { get; set; }
@@ -124,8 +125,8 @@ namespace Annytab.Fortnox.Client.V3
         public string VisitingCountry { get; set; }
         public string VisitingCountryCode { get; set; }
         public string VisitingZipCode { get; set; }
-        public string WWW { get; set; }
         public string WayOfDelivery { get; set; }
+        public string WWW { get; set; }
         public string YourReference { get; set; }
         public string ZipCode { get; set; }
 
@@ -172,6 +173,7 @@ namespace Annytab.Fortnox.Client.V3
             this.EmailOrder = null;
             this.EmailOrderBCC = null;
             this.EmailOrderCC = null;
+            this.ExternalReference = null;
             this.Fax = null;
             this.GLN = null;
             this.GLNDelivery = null;

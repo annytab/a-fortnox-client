@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -40,14 +41,23 @@ namespace TestProgram
                 Account = new Account
                 {
                     Active = true,
-                    Number = "9004",
+                    Number = "9005",
                     Description = "Test account",
                     SRU = "8001"
                 }
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<AccountRoot>(config.client, post, "accounts");
+            FortnoxResponse<AccountRoot> fr = await config.fortnox_client.Add<AccountRoot>(post, "accounts");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -63,14 +73,23 @@ namespace TestProgram
                 Account = new Account
                 {
                     Active = true,
-                    Number = "9004",
+                    Number = "9005",
                     Description = "Updated account",
                     SRU = "8002"
                 }
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<AccountRoot>(config.client, post, "accounts/9004");
+            FortnoxResponse<AccountRoot> fr = await config.fortnox_client.Update<AccountRoot>(post, "accounts/9005");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -81,10 +100,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            AccountRoot post = await config.fortnox_repository.Get<AccountRoot>(config.client, "accounts/9004");
+            FortnoxResponse<AccountRoot> fr = await config.fortnox_client.Get<AccountRoot>("accounts/3000");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Account);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -95,10 +120,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            AccountsRoot post = await config.fortnox_repository.Get<AccountsRoot>(config.client, "accounts?limit=2&page=1");
+            FortnoxResponse<AccountsRoot> fr = await config.fortnox_client.Get<AccountsRoot>("accounts?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Accounts.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

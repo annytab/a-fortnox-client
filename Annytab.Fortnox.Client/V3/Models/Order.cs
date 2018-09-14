@@ -86,7 +86,7 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? CurrencyUnit { get; set; }
         public string CustomerName { get; set; }
         public string CustomerNumber { get; set; }
-        public bool? IsDelivery { get; set; }
+        public string DeliveryState { get; set; }
         public string DeliveryAddress1 { get; set; }
         public string DeliveryAddress2 { get; set; }
         public string DeliveryCity { get; set; }
@@ -110,6 +110,7 @@ namespace Annytab.Fortnox.Client.V3
         public string OfferReference { get; set; }
         public string OrderDate { get; set; }
         public IList<OrderRow> OrderRows { get; set; }
+        public string OrderType { get; set; }
         public string OrganisationNumber { get; set; }
         public string OurReference { get; set; }
         public string Phone1 { get; set; }
@@ -127,7 +128,7 @@ namespace Annytab.Fortnox.Client.V3
         public string TermsOfPayment { get; set; }
         public decimal? Total { get; set; }
         public decimal? TotalToPay { get; set; }
-        public decimal? TotalVat { get; set; }
+        public decimal? TotalVAT { get; set; }
         public bool? VATIncluded { get; set; }
         public string WayOfDelivery { get; set; }
         public string YourReference { get; set; }
@@ -164,7 +165,7 @@ namespace Annytab.Fortnox.Client.V3
             this.CurrencyUnit = null;
             this.CustomerName = null;
             this.CustomerNumber = null;
-            this.IsDelivery = null;
+            this.DeliveryState = null;
             this.DeliveryAddress1 = null;
             this.DeliveryAddress2 = null;
             this.DeliveryCity = null;
@@ -188,6 +189,7 @@ namespace Annytab.Fortnox.Client.V3
             this.OfferReference = null;
             this.OrderDate = null;
             this.OrderRows = null;
+            this.OrderType = null;
             this.OrganisationNumber = null;
             this.OurReference = null;
             this.Phone1 = null;
@@ -205,7 +207,7 @@ namespace Annytab.Fortnox.Client.V3
             this.TermsOfPayment = null;
             this.Total = null;
             this.TotalToPay = null;
-            this.TotalVat = null;
+            this.TotalVAT = null;
             this.VATIncluded = null;
             this.WayOfDelivery = null;
             this.YourReference = null;

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -41,7 +42,7 @@ namespace TestProgram
                 ContractAccrual = new ContractAccrual
                 {
                     AccrualAccount = "2990",
-                    CostAccount = "3990",
+                    CostAccount = "4518",
                     DocumentNumber = "1",
                     Description = "TESTAR",
                     Total = 50000M,
@@ -64,7 +65,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<ContractAccrualRoot>(config.client, post, "contractaccruals");
+            FortnoxResponse<ContractAccrualRoot> fr = await config.fortnox_client.Add<ContractAccrualRoot>(post, "contractaccruals");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -99,8 +109,18 @@ namespace TestProgram
                     }
                 }
             };
+
             // Update the post
-            post = await config.fortnox_repository.Update<ContractAccrualRoot>(config.client, post, "contractaccruals/1");
+            FortnoxResponse<ContractAccrualRoot> fr = await config.fortnox_client.Update<ContractAccrualRoot>(post, "contractaccruals/1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -111,10 +131,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            ContractAccrualRoot post = await config.fortnox_repository.Get<ContractAccrualRoot>(config.client, "contractaccruals/1");
+            FortnoxResponse<ContractAccrualRoot> fr = await config.fortnox_client.Get<ContractAccrualRoot>("contractaccruals/1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.ContractAccrual);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -125,10 +151,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            ContractAccrualsRoot post = await config.fortnox_repository.Get<ContractAccrualsRoot>(config.client, "contractaccruals?limit=2&page=1");
+            FortnoxResponse<ContractAccrualsRoot> fr = await config.fortnox_client.Get<ContractAccrualsRoot>("contractaccruals?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.ContractAccruals.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -139,10 +171,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "contractaccruals/1");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("contractaccruals/1");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

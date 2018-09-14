@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -40,7 +41,7 @@ namespace TestProgram
                 Employee = new Employee
                 {
                     EmployeeId = "TEST-100",
-                    PersonalIdentityNumber = "555555-88888",
+                    PersonalIdentityNumber = "8206067020",
                     FirstName = "Nils",
                     LastName = "Svensson",
                     EmploymentDate = "2017-11-06"
@@ -48,7 +49,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<EmployeeRoot>(config.client, post, "employees");
+            FortnoxResponse<EmployeeRoot> fr = await config.fortnox_client.Add<EmployeeRoot>(post, "employees");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -64,7 +74,7 @@ namespace TestProgram
                 Employee = new Employee
                 {
                     EmployeeId = "TEST-100",
-                    PersonalIdentityNumber = "555555-88888",
+                    PersonalIdentityNumber = "8206067020",
                     FirstName = "Nils",
                     LastName = "Svensson",
                     EmploymentDate = "2017-11-06",
@@ -73,7 +83,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<EmployeeRoot>(config.client, post, "employees/TEST-100");
+            FortnoxResponse<EmployeeRoot> fr = await config.fortnox_client.Update<EmployeeRoot>(post, "employees/TEST-100");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -84,10 +103,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            EmployeeRoot post = await config.fortnox_repository.Get<EmployeeRoot>(config.client, "employees/TEST-100");
+            FortnoxResponse<EmployeeRoot> fr = await config.fortnox_client.Get<EmployeeRoot>("employees/TEST-100");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Employee);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -98,10 +123,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            EmployeesRoot post = await config.fortnox_repository.Get<EmployeesRoot>(config.client, "employees?limit=2&page=1");
+            FortnoxResponse<EmployeesRoot> fr = await config.fortnox_client.Get<EmployeesRoot>("employees?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Employees.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -45,7 +46,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<FinancialYearRoot>(config.client, post, "financialyears");
+            FortnoxResponse<FinancialYearRoot> fr = await config.fortnox_client.Add<FinancialYearRoot>(post, "financialyears");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -56,10 +66,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            FinancialYearRoot post = await config.fortnox_repository.Get<FinancialYearRoot>(config.client, "financialyears/3");
+            FortnoxResponse<FinancialYearRoot> fr = await config.fortnox_client.Get<FinancialYearRoot>("financialyears/3");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.FinancialYear);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -70,10 +86,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            FinancialYearsRoot post = await config.fortnox_repository.Get<FinancialYearsRoot>(config.client, "financialyears?limit=3&page=1");
+            FortnoxResponse<FinancialYearsRoot> fr = await config.fortnox_client.Get<FinancialYearsRoot>("financialyears?limit=3&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.FinancialYears.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

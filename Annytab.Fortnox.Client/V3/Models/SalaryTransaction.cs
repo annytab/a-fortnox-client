@@ -73,6 +73,8 @@ namespace Annytab.Fortnox.Client.V3
         public string Expense { get; set; }
         public decimal? VAT { get; set; }
         public string TextRow { get; set; }
+        public string CostCenter { get; set; }
+        public string Project { get; set; }
 
         #endregion
 
@@ -94,6 +96,8 @@ namespace Annytab.Fortnox.Client.V3
             this.Expense = null;
             this.VAT = null;
             this.TextRow = null;
+            this.CostCenter = null;
+            this.Project = null;
 
         } // End of the constructor
 

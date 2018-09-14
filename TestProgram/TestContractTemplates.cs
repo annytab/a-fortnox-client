@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -62,7 +63,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<ContractTemplateRoot>(config.client, post, "contracttemplates");
+            FortnoxResponse<ContractTemplateRoot> fr = await config.fortnox_client.Add<ContractTemplateRoot>(post, "contracttemplates");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -93,7 +103,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<ContractTemplateRoot>(config.client, post, "contracttemplates/1");
+            FortnoxResponse<ContractTemplateRoot> fr = await config.fortnox_client.Update<ContractTemplateRoot>(post, "contracttemplates/1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -104,10 +123,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            ContractTemplateRoot post = await config.fortnox_repository.Get<ContractTemplateRoot>(config.client, "contracttemplates/1");
+            FortnoxResponse<ContractTemplateRoot> fr = await config.fortnox_client.Get<ContractTemplateRoot>("contracttemplates/2");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.ContractTemplate);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -118,10 +143,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            ContractTemplatesRoot post = await config.fortnox_repository.Get<ContractTemplatesRoot>(config.client, "contracttemplates?limit=2&page=1");
+            FortnoxResponse<ContractTemplatesRoot> fr = await config.fortnox_client.Get<ContractTemplatesRoot>("contracttemplates?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.ContractTemplates.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

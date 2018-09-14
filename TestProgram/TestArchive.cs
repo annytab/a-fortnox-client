@@ -1,7 +1,8 @@
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
-using System.IO;
 
 namespace TestProgram
 {
@@ -45,10 +46,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<FolderRoot>(config.client, post, "archive/?path=test\\sub\\sub-folder");
+            FortnoxResponse<FolderRoot> fr = await config.fortnox_client.Add<FolderRoot>(post, "archive/?path=test\\sub");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -59,14 +66,20 @@ namespace TestProgram
         public async Task TestUploadFile()
         {
             // Set the file path
-            string path = "D:\\Bilder\\1960.jpg";
+            string path = "D:\\Bilder\\1970.jpg";
 
             using (FileStream stream = System.IO.File.OpenRead(path))
             {
-                FileRoot post = await config.fortnox_repository.UploadFile<FileRoot>(config.client, stream, "bil-test.jpg", "archive?path=test\\sub");
+                FortnoxResponse<FileRoot> fr = await config.fortnox_client.UploadFile<FileRoot>(stream, "thore-skogman2.jpg", "archive?path=test\\sub");
+
+                // Log the error
+                if (fr.model == null)
+                {
+                    config.logger.LogError(fr.error);
+                }
 
                 // Test evaluation
-                Assert.AreNotEqual(null, post);
+                Assert.AreNotEqual(null, fr.model);
             }
 
         } // End of the TestUploadFile method
@@ -78,10 +91,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            FolderRoot post = await config.fortnox_repository.Get<FolderRoot>(config.client, "archive?path=test\\sub");
+            FortnoxResponse<FolderRoot> fr = await config.fortnox_client.Get<FolderRoot>("archive?path=test\\sub");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Folder.Files.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -92,10 +111,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a folder
-            FolderRoot post = await config.fortnox_repository.Get<FolderRoot>(config.client, "archive?path=test\\sub");
+            FortnoxResponse<FolderRoot> fr = await config.fortnox_client.Get<FolderRoot>("archive?path=test\\sub");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Folder);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -105,18 +130,21 @@ namespace TestProgram
         [TestMethod]
         public async Task TestDownloadFile()
         {
-            // Create a boolean
-            bool? success = null;
-
             // Create a file stream
-            using (FileStream fileStream = System.IO.File.OpenWrite("D:\\Bilder\\fortnox.jpg"))
+            using (FileStream fileStream = System.IO.File.OpenWrite("D:\\Bilder\\fortnox-skogman.jpg"))
             {
                 // Get the file
-                success = await config.fortnox_repository.DownloadFile(config.client, fileStream, "archive/f02c1078-0071-451b-aafe-af1a64a493eb");
-            }
+                FortnoxResponse<bool> fr = await config.fortnox_client.DownloadFile(fileStream, "archive/d3744be4-c9fd-47a4-9903-2a27af112902");
 
-            // Test evaluation
-            Assert.AreEqual(true, success);
+                // Log the error
+                if (fr.model == false)
+                {
+                    config.logger.LogError(fr.error);
+                }
+
+                // Test evaluation
+                Assert.AreEqual(true, fr.model);
+            }
 
         } // End of the TestDownloadFile method
 
@@ -127,10 +155,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Delete a folder or a file (archive?path=test\\sub) 
-            bool success = await config.fortnox_repository.Delete(config.client, "archive/f02c1078-0071-451b-aafe-af1a64a493eb");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("archive/d3744be4-c9fd-47a4-9903-2a27af112902");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

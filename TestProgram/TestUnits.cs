@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -45,7 +46,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<UnitRoot>(config.client, post, "units");
+            FortnoxResponse<UnitRoot> fr = await config.fortnox_client.Add<UnitRoot>(post, "units");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -66,7 +76,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<UnitRoot>(config.client, post, "units/XXX");
+            FortnoxResponse<UnitRoot> fr = await config.fortnox_client.Update<UnitRoot>(post, "units/XXX");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -77,10 +96,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            UnitRoot post = await config.fortnox_repository.Get<UnitRoot>(config.client, "units/XXX");
+            FortnoxResponse<UnitRoot> fr = await config.fortnox_client.Get<UnitRoot>("units/XXX");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Unit);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -91,10 +116,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            UnitsRoot post = await config.fortnox_repository.Get<UnitsRoot>(config.client, "units?limit=5&page=1");
+            FortnoxResponse<UnitsRoot> fr = await config.fortnox_client.Get<UnitsRoot>("units?limit=5&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Units.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -105,10 +136,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "units/XXX");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("units/XXX");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

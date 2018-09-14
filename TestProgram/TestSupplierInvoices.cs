@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -40,7 +41,7 @@ namespace TestProgram
             {
                 SupplierInvoice = new SupplierInvoice
                 {
-                    SupplierNumber = "1",
+                    SupplierNumber = "5",
                     InvoiceDate = "2017-11-01",
                     DueDate = "2017-11-30",
                     Total = 10000,
@@ -84,7 +85,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<SupplierInvoiceRoot>(config.client, post, "supplierinvoices");
+            FortnoxResponse<SupplierInvoiceRoot> fr = await config.fortnox_client.Add<SupplierInvoiceRoot>(post, "supplierinvoices");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -139,6 +149,7 @@ namespace TestProgram
                             Credit = 0,
                             Total = 8000,
                             ArticleNumber = "1",
+                            Unit = "st",
                             Quantity = 1000,
                             Price = 8
                         }
@@ -147,7 +158,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<SupplierInvoiceRoot>(config.client, post, "supplierinvoices/11");
+            FortnoxResponse<SupplierInvoiceRoot> fr = await config.fortnox_client.Update<SupplierInvoiceRoot>(post, "supplierinvoices/50");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -158,10 +178,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            SupplierInvoiceRoot post = await config.fortnox_repository.Get<SupplierInvoiceRoot>(config.client, "supplierinvoices/28");
+            FortnoxResponse<SupplierInvoiceRoot> fr = await config.fortnox_client.Get<SupplierInvoiceRoot>("supplierinvoices/1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.SupplierInvoice);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -172,10 +198,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            SupplierInvoicesRoot post = await config.fortnox_repository.Get<SupplierInvoicesRoot>(config.client, "supplierinvoices?limit=5&page=1");
+            FortnoxResponse<SupplierInvoicesRoot> fr = await config.fortnox_client.Get<SupplierInvoicesRoot>("supplierinvoices?limit=5&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.SupplierInvoices.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

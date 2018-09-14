@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -40,7 +41,7 @@ namespace TestProgram
             {
                 Contract = new Contract
                 {
-                    DocumentNumber = "2",
+                    DocumentNumber = "3",
                     CustomerNumber = "10",
                     ContractDate = "2016-04-01",
                     PeriodStart = "2016-05-01",
@@ -62,7 +63,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<ContractRoot>(config.client, post, "contracts");
+            FortnoxResponse<ContractRoot> fr = await config.fortnox_client.Add<ContractRoot>(post, "contracts");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -77,7 +87,7 @@ namespace TestProgram
             {
                 Contract = new Contract
                 {
-                    DocumentNumber = "2",
+                    DocumentNumber = "3",
                     CustomerNumber = "10",
                     ContractDate = "2016-04-01",
                     PeriodStart = "2016-05-01",
@@ -99,7 +109,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<ContractRoot>(config.client, post, "contracts/2");
+            FortnoxResponse<ContractRoot> fr = await config.fortnox_client.Update<ContractRoot>(post, "contracts/3");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -110,10 +129,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            ContractRoot post = await config.fortnox_repository.Get<ContractRoot>(config.client, "contracts/1");
+            FortnoxResponse<ContractRoot> fr = await config.fortnox_client.Get<ContractRoot>("contracts/1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Contract);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -124,10 +149,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            ContractsRoot post = await config.fortnox_repository.Get<ContractsRoot>(config.client, "contracts?limit=2&page=1");
+            FortnoxResponse<ContractsRoot> fr = await config.fortnox_client.Get<ContractsRoot>("contracts?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Contracts.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

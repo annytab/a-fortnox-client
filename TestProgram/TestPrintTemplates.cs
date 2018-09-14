@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -35,10 +36,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            PrintTemplatesRoot post = await config.fortnox_repository.Get<PrintTemplatesRoot>(config.client, "printtemplates?limit=2&page=1");
+            FortnoxResponse<PrintTemplatesRoot> fr = await config.fortnox_client.Get<PrintTemplatesRoot>("printtemplates?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.PrintTemplates.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

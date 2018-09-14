@@ -77,6 +77,7 @@ namespace Annytab.Fortnox.Client.V3
         public IList<VoucherRow> VoucherRows { get; set; }
         public string VoucherSeries { get; set; }
         public string Year { get; set; }
+        public string ApprovalState { get; set; }
 
         #endregion
 
@@ -100,6 +101,7 @@ namespace Annytab.Fortnox.Client.V3
             this.VoucherRows = null;
             this.VoucherSeries = null;
             this.Year = null;
+            this.ApprovalState = null;
 
         } // End of the constructor
 

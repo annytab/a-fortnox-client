@@ -69,10 +69,10 @@ namespace Annytab.Fortnox.Client.V3
         public string Url { get; set; }
         [JsonProperty("@urlTaxReductionList")]
         public string UrlTaxReductionList { get; set; }
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
         public decimal? AdministrationFee { get; set; }
         public decimal? AdministrationFeeVAT { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
         public decimal? Balance { get; set; }
         public decimal? BasisTaxReduction { get; set; }
         public bool? Booked { get; set; }
@@ -82,8 +82,8 @@ namespace Annytab.Fortnox.Client.V3
         public string ContractReference { get; set; }
         public decimal? ContributionPercent { get; set; }
         public decimal? ContributionValue { get; set; }
-        public string CostCenter { get; set; }
         public string Country { get; set; }
+        public string CostCenter { get; set; }
         public bool? Credit { get; set; }
         public string CreditInvoiceReference { get; set; }
         public string Currency { get; set; }
@@ -101,8 +101,8 @@ namespace Annytab.Fortnox.Client.V3
         public string DocumentNumber { get; set; }
         public string DueDate { get; set; }
         public EDIInformation EDIInformation { get; set; }
-        public bool? EUQuarterlyReport { get; set; }
         public EmailInformation EmailInformation { get; set; }
+        public bool? EUQuarterlyReport { get; set; }
         public string ExternalInvoiceReference1 { get; set; }
         public string ExternalInvoiceReference2 { get; set; }
         public decimal? Freight { get; set; }
@@ -110,8 +110,8 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? Gross { get; set; }
         public bool? HouseWork { get; set; }
         public string InvoiceDate { get; set; }
-        public string InvoicePeriodEnd { get; set; }
         public string InvoicePeriodStart { get; set; }
+        public string InvoicePeriodEnd { get; set; }
         public string InvoiceReference { get; set; }
         public IList<InvoiceRow> InvoiceRows { get; set; }
         public string InvoiceType { get; set; }
@@ -153,6 +153,7 @@ namespace Annytab.Fortnox.Client.V3
         public string YourReference { get; set; }
         public string ZipCode { get; set; }
         public string AccountingMethod { get; set; }
+        public string FinalPayDate { get; set; }
 
         #endregion
 
@@ -250,6 +251,7 @@ namespace Annytab.Fortnox.Client.V3
             this.YourReference = null;
             this.ZipCode = null;
             this.AccountingMethod = null;
+            this.FinalPayDate = null;
 
         } // End of the constructor
 

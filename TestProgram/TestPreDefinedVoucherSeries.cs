@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -40,12 +41,21 @@ namespace TestProgram
                 PreDefinedVoucherSeries = new PreDefinedVoucherSeries
                 {
                     Name = "INVOICE",
-                    VoucherSeries = "A"
+                    VoucherSeries = "B"
                 }
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<PreDefinedVoucherSeriesRoot>(config.client, post, "predefinedvoucherseries/INVOICE");
+            FortnoxResponse<PreDefinedVoucherSeriesRoot> fr = await config.fortnox_client.Update<PreDefinedVoucherSeriesRoot>(post, "predefinedvoucherseries/INVOICE");
+            
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -56,10 +66,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            PreDefinedVoucherSeriesRoot post = await config.fortnox_repository.Get<PreDefinedVoucherSeriesRoot>(config.client, "predefinedvoucherseries/INVOICE");
+            FortnoxResponse<PreDefinedVoucherSeriesRoot> fr = await config.fortnox_client.Get<PreDefinedVoucherSeriesRoot>("predefinedvoucherseries/INVOICE");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.PreDefinedVoucherSeries);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -70,10 +86,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            PreDefinedVoucherSeriesCollectionRoot post = await config.fortnox_repository.Get<PreDefinedVoucherSeriesCollectionRoot>(config.client, "predefinedvoucherseries?limit=10&page=1");
+            FortnoxResponse<PreDefinedVoucherSeriesCollectionRoot> fr = await config.fortnox_client.Get<PreDefinedVoucherSeriesCollectionRoot>("predefinedvoucherseries?limit=10&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.PreDefinedVoucherSeriesCollection.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -68,7 +69,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<VoucherRoot>(config.client, post, "vouchers");
+            FortnoxResponse<VoucherRoot> fr = await config.fortnox_client.Add<VoucherRoot>(post, "vouchers");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -79,10 +89,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            VoucherRoot post = await config.fortnox_repository.Get<VoucherRoot>(config.client, "vouchers/D/5?financialyear=2");
+            FortnoxResponse<VoucherRoot> fr = await config.fortnox_client.Get<VoucherRoot>("vouchers/D/5?financialyear=2");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Voucher);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -93,10 +109,16 @@ namespace TestProgram
         public async Task TestGetAll()
         {
             // Get a list
-            VouchersRoot post = await config.fortnox_repository.Get<VouchersRoot>(config.client, "vouchers?limit=5&page=1");
+            FortnoxResponse<VouchersRoot> fr = await config.fortnox_client.Get<VouchersRoot>("vouchers?limit=5&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Vouchers.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetAll method
 
@@ -107,10 +129,16 @@ namespace TestProgram
         public async Task TestGetAllInSeries()
         {
             // Get a list
-            VouchersRoot post = await config.fortnox_repository.Get<VouchersRoot>(config.client, "vouchers/sublist/B?limit=5&page=1");
+            FortnoxResponse<VouchersRoot> fr = await config.fortnox_client.Get<VouchersRoot>("vouchers/sublist/B?limit=5&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Vouchers.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetAllInSeries method
 

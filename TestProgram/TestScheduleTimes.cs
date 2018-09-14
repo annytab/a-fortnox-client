@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -44,7 +45,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<ScheduleTimeRoot>(config.client, post, "scheduletimes/1/2017-11-03");
+            FortnoxResponse<ScheduleTimeRoot> fr = await config.fortnox_client.Update<ScheduleTimeRoot>(post, "scheduletimes/2/2018-01-06");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -55,7 +65,16 @@ namespace TestProgram
         public async Task TestResetPost()
         {
             // Update the post
-            ScheduleTimeRoot post = await config.fortnox_repository.Action<ScheduleTimeRoot>(config.client, "scheduletimes/1/2017-11-03/resetday");
+            FortnoxResponse<ScheduleTimeRoot> fr = await config.fortnox_client.Action<ScheduleTimeRoot>("scheduletimes/2/2018-01-06/resetday");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestResetPost method
 
@@ -66,10 +85,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            ScheduleTimeRoot post = await config.fortnox_repository.Get<ScheduleTimeRoot>(config.client, "scheduletimes/1/2017-11-03");
+            FortnoxResponse<ScheduleTimeRoot> fr = await config.fortnox_client.Get<ScheduleTimeRoot>("scheduletimes/2/2018-01-06");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.ScheduleTime);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 

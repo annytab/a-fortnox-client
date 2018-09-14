@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -39,13 +40,22 @@ namespace TestProgram
             {
                 SupplierInvoiceFileConnection = new SupplierInvoiceFileConnection
                 {
-                    FileId = "26d1074f-36bb-4e88-a490-9e14998ed35c",
-                    SupplierInvoiceNumber = "9"
+                    FileId = "0a2316bc-6ede-4678-97d3-cbab5e63e8f7",
+                    SupplierInvoiceNumber = "50"
                 }
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<SupplierInvoiceFileConnectionRoot>(config.client, post, "supplierinvoicefileconnections");
+            FortnoxResponse<SupplierInvoiceFileConnectionRoot> fr = await config.fortnox_client.Add<SupplierInvoiceFileConnectionRoot>(post, "supplierinvoicefileconnections");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -56,10 +66,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            SupplierInvoiceFileConnectionRoot post = await config.fortnox_repository.Get<SupplierInvoiceFileConnectionRoot>(config.client, "supplierinvoicefileconnections/26d1074f-36bb-4e88-a490-9e14998ed35c");
+            FortnoxResponse<SupplierInvoiceFileConnectionRoot> fr = await config.fortnox_client.Get<SupplierInvoiceFileConnectionRoot>("supplierinvoicefileconnections/0a2316bc-6ede-4678-97d3-cbab5e63e8f7");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.SupplierInvoiceFileConnection);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -70,10 +86,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            SupplierInvoiceFileConnectionsRoot post = await config.fortnox_repository.Get<SupplierInvoiceFileConnectionsRoot>(config.client, "supplierinvoicefileconnections?limit=2&page=1");
+            FortnoxResponse<SupplierInvoiceFileConnectionsRoot> fr = await config.fortnox_client.Get<SupplierInvoiceFileConnectionsRoot>("supplierinvoicefileconnections?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.SupplierInvoiceFileConnections.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -84,10 +106,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "supplierinvoicefileconnections/26d1074f-36bb-4e88-a490-9e14998ed35c");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("supplierinvoicefileconnections/26d1074f-36bb-4e88-a490-9e14998ed35c");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

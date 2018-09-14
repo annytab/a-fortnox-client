@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -39,12 +40,21 @@ namespace TestProgram
             {
                 PreDefinedAccount = new PreDefinedAccount
                 {
-                    Account = "1931"
+                    Account = "1930"
                 }
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<PreDefinedAccountRoot>(config.client, post, "predefinedaccounts/BG");
+            FortnoxResponse<PreDefinedAccountRoot> fr = await config.fortnox_client.Update<PreDefinedAccountRoot>(post, "predefinedaccounts/BG");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -55,10 +65,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            PreDefinedAccountRoot post = await config.fortnox_repository.Get<PreDefinedAccountRoot>(config.client, "predefinedaccounts/BG");
+            FortnoxResponse<PreDefinedAccountRoot> fr = await config.fortnox_client.Get<PreDefinedAccountRoot>("predefinedaccounts/BG");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.PreDefinedAccount);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -69,10 +85,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            PreDefinedAccountsRoot post = await config.fortnox_repository.Get<PreDefinedAccountsRoot>(config.client, "predefinedaccounts?limit=2&page=1");
+            FortnoxResponse<PreDefinedAccountsRoot> fr = await config.fortnox_client.Get<PreDefinedAccountsRoot>("predefinedaccounts?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.PreDefinedAccounts.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

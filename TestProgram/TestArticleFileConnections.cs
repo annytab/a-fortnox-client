@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -39,13 +40,22 @@ namespace TestProgram
             {
                 ArticleFileConnection = new ArticleFileConnection
                 {
-                    FileId = "017618f5-eb3b-45d0-864e-4509fcbe07c5",
+                    FileId = "abf0a4fe-b254-485e-85bb-eae85f40c1c0",
                     ArticleNumber = "1"
                 }
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<ArticleFileConnectionRoot>(config.client, post, "articlefileconnections");
+            FortnoxResponse<ArticleFileConnectionRoot> fr = await config.fortnox_client.Add<ArticleFileConnectionRoot>(post, "articlefileconnections");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -56,10 +66,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            ArticleFileConnectionRoot post = await config.fortnox_repository.Get<ArticleFileConnectionRoot>(config.client, "articlefileconnections/017618f5-eb3b-45d0-864e-4509fcbe07c5");
+            FortnoxResponse<ArticleFileConnectionRoot> fr = await config.fortnox_client.Get<ArticleFileConnectionRoot>("articlefileconnections/696292d5-8a3a-4de3-bbef-18bf55bc9eac");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.ArticleFileConnection);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -70,10 +86,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            ArticleFileConnectionsRoot post = await config.fortnox_repository.Get<ArticleFileConnectionsRoot>(config.client, "articlefileconnections?limit=2&page=1");
+            FortnoxResponse<ArticleFileConnectionsRoot> fr = await config.fortnox_client.Get<ArticleFileConnectionsRoot>("articlefileconnections?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.ArticleFileConnections.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -84,10 +106,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "articlefileconnections/017618f5-eb3b-45d0-864e-4509fcbe07c5");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("articlefileconnections/bd947a74-73d2-4929-b9e9-67a180f0bcc6");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

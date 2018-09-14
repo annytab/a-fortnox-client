@@ -90,12 +90,11 @@ namespace Annytab.Fortnox.Client.V3
         public bool? HouseWork { get; set; }
         public decimal? InvoiceDiscount { get; set; }
         public Int32? InvoiceInterval { get; set; }
-        public IList<InvoiceRow> InvoiceRows { get; set; }
         public Int32? InvoicesRemaining { get; set; }
+        public IList<InvoiceRow> InvoiceRows { get; set; }
         public string Language { get; set; }
         public string LastInvoiceDate { get; set; }
         public decimal? Net { get; set; }
-        public bool? Ongoing { get; set; }
         public string OurReference { get; set; }
         public string PeriodEnd { get; set; }
         public string PeriodStart { get; set; }
@@ -148,12 +147,11 @@ namespace Annytab.Fortnox.Client.V3
             this.HouseWork = null;
             this.InvoiceDiscount = null;
             this.InvoiceInterval = null;
-            this.InvoiceRows = null;
             this.InvoicesRemaining = null;
+            this.InvoiceRows = null;
             this.Language = null;
             this.LastInvoiceDate = null;
             this.Net = null;
-            this.Ongoing = null;
             this.OurReference = null;
             this.PeriodEnd = null;
             this.PeriodStart = null;

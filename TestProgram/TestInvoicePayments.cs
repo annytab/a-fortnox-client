@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -42,12 +43,21 @@ namespace TestProgram
                 {
                     Amount = 75M,
                     AmountCurrency = 75M,
-                    InvoiceNumber = "1"
+                    InvoiceNumber = "2"
                 }
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<InvoicePaymentRoot>(config.client, post, "invoicepayments");
+            FortnoxResponse<InvoicePaymentRoot> fr = await config.fortnox_client.Add<InvoicePaymentRoot>(post, "invoicepayments");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -64,7 +74,7 @@ namespace TestProgram
                 {
                     Amount = 70M,
                     AmountCurrency = 100M,
-                    InvoiceNumber = "1",
+                    InvoiceNumber = "2",
                     WriteOffs = new List<WriteOff>
                     {
                         new WriteOff
@@ -77,7 +87,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<InvoicePaymentRoot>(config.client, post, "invoicepayments/1/bookkeep");
+            FortnoxResponse<InvoicePaymentRoot> fr = await config.fortnox_client.Update<InvoicePaymentRoot>(post, "invoicepayments/5");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -88,10 +107,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            InvoicePaymentRoot post = await config.fortnox_repository.Get<InvoicePaymentRoot>(config.client, "invoicepayments/1");
+            FortnoxResponse<InvoicePaymentRoot> fr = await config.fortnox_client.Get<InvoicePaymentRoot>("invoicepayments/5");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.InvoicePayment);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -102,10 +127,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            InvoicePaymentsRoot post = await config.fortnox_repository.Get<InvoicePaymentsRoot>(config.client, "invoicepayments?limit=2&page=1");
+            FortnoxResponse<InvoicePaymentsRoot> fr = await config.fortnox_client.Get<InvoicePaymentsRoot>("invoicepayments?limit=10&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.InvoicePayments.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -116,10 +147,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "invoicepayments/2");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("invoicepayments/2");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

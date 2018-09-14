@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
-using System.Collections.Generic;
 
 namespace TestProgram
 {
@@ -40,7 +41,7 @@ namespace TestProgram
             {
                 Order = new Order
                 {
-                    DocumentNumber = "100000",
+                    DocumentNumber = "100001",
                     CustomerNumber = "2",
                     OrderRows = new List<OrderRow>
                     {
@@ -63,7 +64,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<OrderRoot>(config.client, post, "orders");
+            FortnoxResponse<OrderRoot> fr = await config.fortnox_client.Add<OrderRoot>(post, "orders");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -78,8 +88,8 @@ namespace TestProgram
             {
                 Order = new Order
                 {
-                    DocumentNumber = "100000",
-                    CustomerNumber = "2",
+                    DocumentNumber = "100001",
+                    CustomerNumber = "10",
                     OrderRows = new List<OrderRow>
                     {
                         new OrderRow
@@ -100,7 +110,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<OrderRoot>(config.client, post, "orders/100000");
+            FortnoxResponse<OrderRoot> fr = await config.fortnox_client.Update<OrderRoot>(post, "orders/100001");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -111,10 +130,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            OrderRoot post = await config.fortnox_repository.Get<OrderRoot>(config.client, "orders/21");
+            FortnoxResponse<OrderRoot> fr = await config.fortnox_client.Get<OrderRoot>("orders/21");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Order);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -125,10 +150,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            OrdersRoot post = await config.fortnox_repository.Get<OrdersRoot>(config.client, "orders?limit=2&page=1");
+            FortnoxResponse<OrdersRoot> fr = await config.fortnox_client.Get<OrdersRoot>("orders?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Orders.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

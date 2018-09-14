@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -39,13 +40,22 @@ namespace TestProgram
             {
                 Supplier = new Supplier
                 {
-                    SupplierNumber = "A500PP",
-                    Name = "Test AB"
+                    SupplierNumber = "AD7000",
+                    Name = "Test 7000 AB"
                 }
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<SupplierRoot>(config.client, post, "suppliers");
+            FortnoxResponse<SupplierRoot> fr = await config.fortnox_client.Add<SupplierRoot>(post, "suppliers");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -60,14 +70,23 @@ namespace TestProgram
             {
                 Supplier = new Supplier
                 {
-                    SupplierNumber = "A500PP",
-                    Name = "Test AB",
+                    SupplierNumber = "AD7000",
+                    Name = "AD 7000 Inc.",
                     CountryCode = "US"
                 }
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<SupplierRoot>(config.client, post, "suppliers/A500PP");
+            FortnoxResponse<SupplierRoot> fr = await config.fortnox_client.Update<SupplierRoot>(post, "suppliers/AD7000");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -78,10 +97,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            SupplierRoot post = await config.fortnox_repository.Get<SupplierRoot>(config.client, "suppliers/1");
+            FortnoxResponse<SupplierRoot> fr = await config.fortnox_client.Get<SupplierRoot>("suppliers/AD7000");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Supplier);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -92,10 +117,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            SuppliersRoot post = await config.fortnox_repository.Get<SuppliersRoot>(config.client, "suppliers?limit=2&page=1");
+            FortnoxResponse<SuppliersRoot> fr = await config.fortnox_client.Get<SuppliersRoot>("suppliers?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Suppliers.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -39,12 +40,21 @@ namespace TestProgram
             {
                 Label = new Label
                 {
-                    Description = "TEST2"
+                    Description = "TEST4"
                 }
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<LabelRoot>(config.client, post, "labels");
+            FortnoxResponse<LabelRoot> fr = await config.fortnox_client.Add<LabelRoot>(post, "labels");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -64,7 +74,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<LabelRoot>(config.client, post, "labels/1");
+            FortnoxResponse<LabelRoot> fr = await config.fortnox_client.Update<LabelRoot>(post, "labels/6");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -75,10 +94,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            LabelsRoot post = await config.fortnox_repository.Get<LabelsRoot>(config.client, "labels?limit=2&page=1");
+            FortnoxResponse<LabelsRoot> fr = await config.fortnox_client.Get<LabelsRoot>("labels?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Labels.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -89,10 +114,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "labels/1");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("labels/6");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

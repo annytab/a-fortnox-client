@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -47,7 +48,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<SupplierInvoicePaymentRoot>(config.client, post, "supplierinvoicepayments");
+            FortnoxResponse<SupplierInvoicePaymentRoot> fr = await config.fortnox_client.Add<SupplierInvoicePaymentRoot>(post, "supplierinvoicepayments");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -77,7 +87,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<SupplierInvoicePaymentRoot>(config.client, post, "supplierinvoicepayments/1");
+            FortnoxResponse<SupplierInvoicePaymentRoot> fr = await config.fortnox_client.Update<SupplierInvoicePaymentRoot>(post, "supplierinvoicepayments/4");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -88,10 +107,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            SupplierInvoicePaymentRoot post = await config.fortnox_repository.Get<SupplierInvoicePaymentRoot>(config.client, "supplierinvoicepayments/1");
+            FortnoxResponse<SupplierInvoicePaymentRoot> fr = await config.fortnox_client.Get<SupplierInvoicePaymentRoot>("supplierinvoicepayments/4");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.SupplierInvoicePayment);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -102,10 +127,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            SupplierInvoicePaymentsRoot post = await config.fortnox_repository.Get<SupplierInvoicePaymentsRoot>(config.client, "supplierinvoicepayments?limit=2&page=1");
+            FortnoxResponse<SupplierInvoicePaymentsRoot> fr = await config.fortnox_client.Get<SupplierInvoicePaymentsRoot>("supplierinvoicepayments?limit=10&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.SupplierInvoicePayments.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -116,10 +147,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "supplierinvoicepayments/1");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("supplierinvoicepayments/1");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

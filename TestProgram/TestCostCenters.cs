@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -40,13 +41,22 @@ namespace TestProgram
                 CostCenter = new CostCenter
                 {
                     Active = true,
-                    Code = "TT2",
-                    Description = "TT department 2"
+                    Code = "TT1",
+                    Description = "TT department 1"
                 }
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<CostCenterRoot>(config.client, post, "costcenters");
+            FortnoxResponse<CostCenterRoot> fr = await config.fortnox_client.Add<CostCenterRoot>(post, "costcenters");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -68,7 +78,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<CostCenterRoot>(config.client, post, "costcenters/TT1");
+            FortnoxResponse<CostCenterRoot> fr = await config.fortnox_client.Update<CostCenterRoot>(post, "costcenters/TT1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -79,10 +98,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            CostCenterRoot post = await config.fortnox_repository.Get<CostCenterRoot>(config.client, "costcenters/TT1");
+            FortnoxResponse<CostCenterRoot> fr = await config.fortnox_client.Get<CostCenterRoot>("costcenters/TT2");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.CostCenter);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -93,10 +118,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            CostCentersRoot post = await config.fortnox_repository.Get<CostCentersRoot>(config.client, "costcenters?limit=2&page=1");
+            FortnoxResponse<CostCentersRoot> fr = await config.fortnox_client.Get<CostCentersRoot>("costcenters?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.CostCenters.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -107,10 +138,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "costcenters/TT1");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("costcenters/TT1");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

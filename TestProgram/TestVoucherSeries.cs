@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -46,7 +47,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<VoucherSeriesRoot>(config.client, post, "voucherseries");
+            FortnoxResponse<VoucherSeriesRoot> fr = await config.fortnox_client.Add<VoucherSeriesRoot>(post, "voucherseries");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -68,7 +78,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<VoucherSeriesRoot>(config.client, post, "voucherseries/X");
+            FortnoxResponse<VoucherSeriesRoot> fr = await config.fortnox_client.Update<VoucherSeriesRoot>(post, "voucherseries/X");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -79,10 +98,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            VoucherSeriesRoot post = await config.fortnox_repository.Get<VoucherSeriesRoot>(config.client, "voucherseries/X");
+            FortnoxResponse<VoucherSeriesRoot> fr = await config.fortnox_client.Get<VoucherSeriesRoot>("voucherseries/N");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.VoucherSeries);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -93,10 +118,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            VoucherSeriesCollectionRoot post = await config.fortnox_repository.Get<VoucherSeriesCollectionRoot>(config.client, "voucherseries?limit=2&page=1");
+            FortnoxResponse<VoucherSeriesCollectionRoot> fr = await config.fortnox_client.Get<VoucherSeriesCollectionRoot>("voucherseries?limit=2&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.VoucherSeriesCollection.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 

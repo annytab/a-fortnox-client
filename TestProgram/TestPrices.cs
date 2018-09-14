@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -47,7 +48,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<PriceRoot>(config.client, post, "prices");
+            FortnoxResponse<PriceRoot> fr = await config.fortnox_client.Add<PriceRoot>(post, "prices");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -70,7 +80,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<PriceRoot>(config.client, post, "prices/AD/1/200.00");
+            FortnoxResponse<PriceRoot> fr = await config.fortnox_client.Update<PriceRoot>(post, "prices/AD/1/200.00");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -81,10 +100,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            PriceRoot post = await config.fortnox_repository.Get<PriceRoot>(config.client, "prices/AD/1/200.00");
+            FortnoxResponse<PriceRoot> fr = await config.fortnox_client.Get<PriceRoot>("prices/AD/1/200.00");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.Price);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -95,10 +120,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            PricesRoot post = await config.fortnox_repository.Get<PricesRoot>(config.client, "prices/sublist/AD/1?limit=3&page=1");
+            FortnoxResponse<PricesRoot> fr = await config.fortnox_client.Get<PricesRoot>("prices/sublist/AD/1?limit=3&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.Prices.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -109,10 +140,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "prices/AD/1/300.00");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("prices/AD/1/200.00");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Extensions.Logging;
 using Annytab.Fortnox.Client.V3;
 
 namespace TestProgram
@@ -48,7 +49,16 @@ namespace TestProgram
             };
 
             // Add the post
-            post = await config.fortnox_repository.Add<TaxReductionRoot>(config.client, post, "taxreductions");
+            FortnoxResponse<TaxReductionRoot> fr = await config.fortnox_client.Add<TaxReductionRoot>(post, "taxreductions");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestAddPost method
 
@@ -72,7 +82,16 @@ namespace TestProgram
             };
 
             // Update the post
-            post = await config.fortnox_repository.Update<TaxReductionRoot>(config.client, post, "taxreductions/7");
+            FortnoxResponse<TaxReductionRoot> fr = await config.fortnox_client.Update<TaxReductionRoot>(post, "taxreductions/12");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
+
+            // Test evaluation
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestUpdatePost method
 
@@ -83,10 +102,16 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            TaxReductionRoot post = await config.fortnox_repository.Get<TaxReductionRoot>(config.client, "taxreductions/7");
+            FortnoxResponse<TaxReductionRoot> fr = await config.fortnox_client.Get<TaxReductionRoot>("taxreductions/13");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(null, post.TaxReduction);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetPost method
 
@@ -97,10 +122,16 @@ namespace TestProgram
         public async Task TestGetList()
         {
             // Get a list
-            TaxReductionsRoot post = await config.fortnox_repository.Get<TaxReductionsRoot>(config.client, "taxreductions?limit=2&page=1");
+            FortnoxResponse<TaxReductionsRoot> fr = await config.fortnox_client.Get<TaxReductionsRoot>("taxreductions?limit=10&page=1");
+
+            // Log the error
+            if (fr.model == null)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreNotEqual(0, post.TaxReductions.Count);
+            Assert.AreNotEqual(null, fr.model);
 
         } // End of the TestGetList method
 
@@ -111,10 +142,16 @@ namespace TestProgram
         public async Task TestDeletePost()
         {
             // Get a list
-            bool success = await config.fortnox_repository.Delete(config.client, "taxreductions/7");
+            FortnoxResponse<bool> fr = await config.fortnox_client.Delete("taxreductions/12");
+
+            // Log the error
+            if (fr.model == false)
+            {
+                config.logger.LogError(fr.error);
+            }
 
             // Test evaluation
-            Assert.AreEqual(true, success);
+            Assert.AreEqual(true, fr.model);
 
         } // End of the TestDeletePost method
 
