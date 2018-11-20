@@ -51,7 +51,7 @@ namespace Annytab.Fortnox.Client.V3
             AuthorizationResponse post = new AuthorizationResponse();
 
             // Get the response
-            HttpResponseMessage response = await client.GetAsync("");
+            HttpResponseMessage response = await this.client.GetAsync("");
 
             // Check the status code for the response
             if (response.IsSuccessStatusCode == true)

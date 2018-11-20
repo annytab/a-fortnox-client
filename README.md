@@ -18,6 +18,20 @@ services.AddHttpClient<IFortnoxAuthorizationClient, FortnoxAuthorizationClient>(
 services.AddHttpClient<IFortnoxClient, FortnoxClient>();
 ```
 
+You can also create a client with the constructor by adding a HttpClient and FortnoxOptions.
+
+```
+// Create api options
+IOptions<FortnoxOptions> options = Options.Create<FortnoxOptions>(new FortnoxOptions
+{
+	ClientSecret = "1fBN6P7jRA",
+	AccessToken = "asdfasdfasdfasdfasdf"
+});
+
+// Create a fortnox client
+IFortnoxClient fortnox_client = new FortnoxClient(this.client_factory.CreateClient(), options);
+```
+
 Documentation (English): <a href="https://developer.fortnox.se/documentation/">Fortnox documentation</a>
 
 [![paypal](buy-me-a-coffe.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GMEFTXSE77FWE)

@@ -9,15 +9,12 @@
     <Copyright>Copyright © 2017</Copyright>
     <PackageIconUrl>http://www.annytab.com/annytab_logo_512x512.png</PackageIconUrl>
     <PackageTags>ASP.NET, .NET, Core, C#, Fortnox, Api, Client, SDK</PackageTags>
-    <PackageReleaseNotes>I have removed IFortnoxRepository and created typed http clients instead. Errors are now returned from methods, not logged in the method as before. The caller can decide what to do with the error information. I have also added more fields to models.
-
-+ FortnoxClient includes a http client and is used to call methods in the Fortnox Api.
-+ FortnoxAuthorizationClient includes a http client and is used to get an access token.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated nuget packages.</PackageReleaseNotes>
     <NeutralLanguage>English</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/annytab/a-fortnox-client</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/annytab/a-fortnox-client/blob/master/LICENSE</PackageLicenseUrl>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
