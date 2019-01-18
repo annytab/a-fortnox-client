@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -32,7 +33,7 @@ namespace Annytab.Fortnox.Client.V3
 
             // Set values for the client
             this.client.BaseAddress = new Uri("https://api.fortnox.se/3/");
-            this.client.DefaultRequestHeaders.Clear();
+            this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             this.client.DefaultRequestHeaders.Add("Client-Secret", this.options.ClientSecret);
             this.client.DefaultRequestHeaders.Add("Authorization-Code", this.options.AuthorizationCode);
 

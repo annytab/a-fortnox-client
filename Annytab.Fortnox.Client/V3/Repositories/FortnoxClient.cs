@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -34,19 +33,12 @@ namespace Annytab.Fortnox.Client.V3
             this.client = http_client;
             this.options = options.Value;
 
-            // Create a http client
-            HttpClientHandler handler = new HttpClientHandler
-            {
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.None
-            };
-            this.client = new HttpClient(handler);
+            // Set values for the client
             this.client.BaseAddress = new Uri("https://api.fortnox.se/3/");
+            this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             this.client.DefaultRequestHeaders.Add("Client-Secret", this.options.ClientSecret);
             this.client.DefaultRequestHeaders.Add("Access-Token", this.options.AccessToken);
-            this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            this.client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-            this.client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("*"));
-
+            
         } // End of the constructor
 
         #endregion

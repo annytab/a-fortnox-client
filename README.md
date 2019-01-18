@@ -7,15 +7,17 @@ an AccessToken already. Set the path to the directory/folder in the Config class
 
 This library is available as a NuGet package: <a href="https://www.nuget.org/packages/Annytab.Fortnox.Client/">a-fortnox-client (NuGet Gallery)</a>
 
-You can add the FortnoxAuthorizationClient and the FortnoxClient to IHttpClientFactory in ASP.NET Core 2.1. See the TestProgram for examples on how to use the client.
+You can add the FortnoxAuthorizationClient and the FortnoxClient to IHttpClientFactory in ASP.NET Core 2.1 or later version. See the TestProgram for examples on how to use the client.
 
 ```
 // Create api options
 services.Configure<FortnoxOptions>(this.settings.GetSection("FortnoxOptions"));
 
 // Add repositories
-services.AddHttpClient<IFortnoxAuthorizationClient, FortnoxAuthorizationClient>();
-services.AddHttpClient<IFortnoxClient, FortnoxClient>();
+services.AddHttpClient<IFortnoxAuthorizationClient, FortnoxAuthorizationClient>().ConfigurePrimaryHttpMessageHandler(() =>
+                new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+services.AddHttpClient<IFortnoxClient, FortnoxClient>().ConfigurePrimaryHttpMessageHandler(() =>
+                new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
 ```
 
 You can also create a client with the constructor by adding a HttpClient and FortnoxOptions.

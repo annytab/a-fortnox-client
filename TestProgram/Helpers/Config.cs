@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -45,24 +47,27 @@ namespace TestProgram
             // Create a service collection
             IServiceCollection services = new ServiceCollection();
 
-            // Add services for logging and for options
-            services.AddLogging();
+            // Add logging and options as services
+            services.AddLogging(logging => {
+                logging.AddConfiguration(this.settings.GetSection("Logging"));
+                logging.AddConsole();
+                logging.AddDebug();
+            });
             services.AddOptions();
 
             // Create api options
             services.Configure<FortnoxOptions>(this.settings.GetSection("FortnoxOptions"));
 
             // Add repositories
-            services.AddHttpClient<IFortnoxClient, FortnoxClient>();
+            services.AddHttpClient<IFortnoxClient, FortnoxClient>().ConfigurePrimaryHttpMessageHandler(() =>
+                new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
 
             // Build a service provider
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            // Configure logging
+            // Configure file logging
             ILoggerFactory loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            loggerFactory.AddConsole(this.settings.GetSection("Logging"));
-            loggerFactory.AddDebug();
-            loggerFactory.AddFile(directory + "\\Logs\\test-{Date}.txt");
+            loggerFactory.AddFile(directory + "\\Logs\\log-{Date}.txt");
 
             // Get references
             this.logger = loggerFactory.CreateLogger<IFortnoxClient>();
