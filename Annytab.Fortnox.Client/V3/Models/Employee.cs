@@ -92,6 +92,8 @@ namespace Annytab.Fortnox.Client.V3
         public bool? Inactive { get; set; }
         public string ClearingNo { get; set; }
         public string BankAccountNo { get; set; }
+        public decimal? AverageWeeklyHours { get; set; }
+        public decimal? AverageHourlyWage { get; set; }
 
         #endregion
 
@@ -132,6 +134,8 @@ namespace Annytab.Fortnox.Client.V3
             this.Inactive = null;
             this.ClearingNo = null;
             this.BankAccountNo = null;
+            this.AverageWeeklyHours = null;
+            this.AverageHourlyWage = null;
 
         } // End of the constructor
 

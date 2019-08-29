@@ -36,49 +36,38 @@ namespace TestProgram
         [TestMethod]
         public async Task TestAddPost()
         {
+
             // Create a post
             SupplierInvoiceRoot post = new SupplierInvoiceRoot
             {
                 SupplierInvoice = new SupplierInvoice
                 {
-                    SupplierNumber = "5",
-                    InvoiceDate = "2017-11-01",
-                    DueDate = "2017-11-30",
-                    Total = 10000,
-                    VAT = 2000,
-                    VATType = "NORMAL",
-                    SalesType = "STOCK",
+                    SupplierNumber = "502",
+                    InvoiceNumber = "D46",
+                    InvoiceDate = "2019-08-06",
+                    DueDate = "2019-08-21",
                     Currency = "SEK",
-                    CurrencyRate = 1,
-                    CurrencyUnit = 1,
+                    Total = 150,
+                    VAT = 30,
+                    VATType = "NORMAL",
+                    //SalesType = "STOCK", Ett fel uppstod i lagermodulen (2003127)
                     SupplierInvoiceRows = new List<SupplierInvoiceRow>
                     {
                         new SupplierInvoiceRow
                         {
-                            Account = "2440",
-                            Code = "TOT",
-                            AccountDescription = "Leverantörsskulder",
-                            Debit = 0,
-                            Credit = 10000,
-                            Total = -10000
-                        },
-                        new SupplierInvoiceRow
-                        {
-                            Account = "2641",
-                            Code = "VAT",
-                            AccountDescription = "Ingående moms",
-                            Debit = 2000,
-                            Credit = 0,
-                            Total = 2000
-                        },
-                        new SupplierInvoiceRow
-                        {
+                            ArticleNumber = "GiB",
                             Account = "6210",
-                            Code = "PRE",
-                            AccountDescription = "Telefoni",
-                            Debit = 8000,
-                            Credit = 0,
-                            Total = 8000
+                            ItemDescription = "Gibibytes",
+                            Quantity = 10,
+                            Price = 8
+                        },
+                        new SupplierInvoiceRow
+                        {
+                            ArticleNumber = "File",
+                            Account = "6210",
+                            ItemDescription = "Filer",
+                            Quantity = 20,
+                            Price = 2
                         }
                     }
                 }
@@ -115,7 +104,7 @@ namespace TestProgram
                     Total = 10000,
                     VAT = 2000,
                     VATType = "NORMAL",
-                    SalesType = "STOCK",
+                    //SalesType = "STOCK", Ett fel uppstod i lagermodulen (2003127)
                     Currency = "SEK",
                     CurrencyRate = 1,
                     CurrencyUnit = 1,
@@ -178,7 +167,7 @@ namespace TestProgram
         public async Task TestGetPost()
         {
             // Get a post
-            FortnoxResponse<SupplierInvoiceRoot> fr = await config.fortnox_client.Get<SupplierInvoiceRoot>("supplierinvoices/1");
+            FortnoxResponse<SupplierInvoiceRoot> fr = await config.fortnox_client.Get<SupplierInvoiceRoot>("supplierinvoices/71");
 
             // Log the error
             if (fr.model == null)

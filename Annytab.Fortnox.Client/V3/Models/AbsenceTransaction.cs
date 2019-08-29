@@ -69,6 +69,8 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? Extent { get; set; }
         public decimal? Hours { get; set; }
         public bool? HolidayEntitling { get; set; }
+        public string CostCenter { get; set; }
+        public string Project { get; set; }
 
         #endregion
 
@@ -86,6 +88,8 @@ namespace Annytab.Fortnox.Client.V3
             this.Extent = null;
             this.Hours = null;
             this.HolidayEntitling = null;
+            this.CostCenter = null;
+            this.Project = null;
 
         } // End of the constructor
 

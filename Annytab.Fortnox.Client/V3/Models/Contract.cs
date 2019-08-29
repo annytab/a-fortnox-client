@@ -113,6 +113,7 @@ namespace Annytab.Fortnox.Client.V3
         public bool? VATIncluded { get; set; }
         public string WayOfDelivery { get; set; }
         public string YourOrderNumber { get; set; }
+        public string YourReference { get; set; }
 
         #endregion
 
@@ -170,6 +171,7 @@ namespace Annytab.Fortnox.Client.V3
             this.VATIncluded = null;
             this.WayOfDelivery = null;
             this.YourOrderNumber = null;
+            this.YourReference = null;
 
         } // End of the constructor
 

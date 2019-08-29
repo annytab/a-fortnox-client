@@ -72,6 +72,7 @@ namespace Annytab.Fortnox.Client.V3
         public string Description { get; set; }
         public decimal? SellRate { get; set; }
         public decimal? Unit { get; set; }
+        public bool? IsAutomatic { get; set; }
 
         #endregion
 
@@ -90,6 +91,7 @@ namespace Annytab.Fortnox.Client.V3
             this.Description = null;
             this.SellRate = null;
             this.Unit = null;
+            this.IsAutomatic = null;
 
         } // End of the constructor
 

@@ -109,6 +109,8 @@ namespace Annytab.Fortnox.Client.V3
         public decimal? DirectCost { get; set; }
         public decimal? FreightCost { get; set; }
         public decimal? OtherCost { get; set; }
+        public string DefaultStockPoint { get; set; }
+        public string DefaultStockLocation { get; set; }
 
         #endregion
 
@@ -162,6 +164,8 @@ namespace Annytab.Fortnox.Client.V3
             this.DirectCost = null;
             this.FreightCost = null;
             this.OtherCost = null;
+            this.DefaultStockPoint = null;
+            this.DefaultStockLocation = null;
 
         } // End of the constructor
 
