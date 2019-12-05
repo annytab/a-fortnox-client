@@ -36,8 +36,42 @@ namespace TestProgram
         [TestMethod]
         public async Task TestAddPost()
         {
-
             // Create a post
+            //SupplierInvoiceRoot post = new SupplierInvoiceRoot
+            //{
+            //    SupplierInvoice = new SupplierInvoice
+            //    {
+            //        SupplierNumber = "502",
+            //        InvoiceNumber = "D46",
+            //        InvoiceDate = "2019-08-06",
+            //        DueDate = "2019-08-21",
+            //        Currency = "SEK",
+            //        Total = 203M,
+            //        VAT = 40.625M,
+            //        RoundOffValue = -0.125M,
+            //        VATType = "NORMAL",
+            //        //SalesType = "STOCK", //Ett fel uppstod i lagermodulen (2003127)
+            //        SupplierInvoiceRows = new List<SupplierInvoiceRow>
+            //        {
+            //            new SupplierInvoiceRow
+            //            {
+            //                ArticleNumber = "GiB",
+            //                Account = "6210",
+            //                ItemDescription = "Gibibytes",
+            //                Quantity = 10,
+            //                Price = 8
+            //            },
+            //            new SupplierInvoiceRow
+            //            {
+            //                ArticleNumber = "File",
+            //                Account = "6210",
+            //                ItemDescription = "Filer",
+            //                Quantity = 33,
+            //                Price = 2.50M
+            //            }
+            //        }
+            //    }
+            //};
             SupplierInvoiceRoot post = new SupplierInvoiceRoot
             {
                 SupplierInvoice = new SupplierInvoice
@@ -47,10 +81,11 @@ namespace TestProgram
                     InvoiceDate = "2019-08-06",
                     DueDate = "2019-08-21",
                     Currency = "SEK",
-                    Total = 150,
-                    VAT = 30,
+                    Total = -203M,
+                    VAT = -40.625M,
+                    RoundOffValue = 0.125M,
                     VATType = "NORMAL",
-                    //SalesType = "STOCK", Ett fel uppstod i lagermodulen (2003127)
+                    //SalesType = "STOCK", //Ett fel uppstod i lagermodulen (2003127)
                     SupplierInvoiceRows = new List<SupplierInvoiceRow>
                     {
                         new SupplierInvoiceRow
@@ -58,7 +93,7 @@ namespace TestProgram
                             ArticleNumber = "GiB",
                             Account = "6210",
                             ItemDescription = "Gibibytes",
-                            Quantity = 10,
+                            Quantity = -10,
                             Price = 8
                         },
                         new SupplierInvoiceRow
@@ -66,8 +101,8 @@ namespace TestProgram
                             ArticleNumber = "File",
                             Account = "6210",
                             ItemDescription = "Filer",
-                            Quantity = 20,
-                            Price = 2
+                            Quantity = -33,
+                            Price = 2.50M
                         }
                     }
                 }
@@ -104,7 +139,7 @@ namespace TestProgram
                     Total = 10000,
                     VAT = 2000,
                     VATType = "NORMAL",
-                    //SalesType = "STOCK", Ett fel uppstod i lagermodulen (2003127)
+                    //SalesType = "STOCK", // Ett fel uppstod i lagermodulen (2003127)
                     Currency = "SEK",
                     CurrencyRate = 1,
                     CurrencyUnit = 1,
@@ -138,7 +173,6 @@ namespace TestProgram
                             Credit = 0,
                             Total = 8000,
                             ArticleNumber = "1",
-                            Unit = "st",
                             Quantity = 1000,
                             Price = 8
                         }
